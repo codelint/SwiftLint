@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Double {
+public extension Double {
     static func randomColorRGB() -> Double {
         return Double(arc4random()) / Double(UInt32.max)
     }

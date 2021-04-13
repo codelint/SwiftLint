@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Array {
+public extension Array {
     
     func groupBy(key: (Element) -> String?) -> [String: [Element]]{
         var results = [String: [Element]]()

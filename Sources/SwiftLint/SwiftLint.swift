@@ -1,3 +1,3 @@
-open class SwiftLint {
+public struct SwiftLint {
     var text = "Hello, World!"
 }

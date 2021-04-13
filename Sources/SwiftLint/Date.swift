@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Date {
+public extension Date {
     var datetimeString: String {
         let formatter = DateFormatter()
         formatter.dateStyle = DateFormatter.Style.medium
