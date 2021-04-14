@@ -10,18 +10,24 @@ import CoreData
 
 open class CoreDataHelper {
     
-    public static let shared = CoreDataHelper()
+    var coreDataName = "default"
+    
+    public static let shared = CoreDataHelper("shared")
+    
+    public init(_ name: String){
+        coreDataName = name
+    }
     
     public lazy var persistentContainer: NSPersistentContainer = {
-        CoreDataHelper.generateContainer()
+        CoreDataHelper.generateContainer(name: coreDataName)
     }()
     
     public lazy var reader: NSPersistentContainer = {
-        CoreDataHelper.generateContainer()
+        CoreDataHelper.generateContainer(name: coreDataName)
     }()
     
-    public static func generateContainer() -> NSPersistentContainer {
-        let container = NSPersistentContainer(name: "going")
+    public static func generateContainer(name: String) -> NSPersistentContainer {
+        let container = NSPersistentContainer(name: name)
         // 3
         container.loadPersistentStores { _, error in
             // 4
@@ -37,7 +43,7 @@ open class CoreDataHelper {
     
     public func once<T:NSManagedObject>(request: NSFetchRequest<T>, action: @escaping (NSPersistentContainer) -> Void){
         
-        let container = CoreDataHelper.generateContainer()
+        let container = CoreDataHelper.generateContainer(name: coreDataName)
         
         action(container)
     }
@@ -62,7 +68,7 @@ open class CoreDataHelper {
         }
     }
     
-    public func instance<T:NSManagedObject>() -> T? {
+    open func instance<T:NSManagedObject>() -> T? {
         return T(context: persistentContainer.viewContext)
     }
     
@@ -82,7 +88,7 @@ open class CoreDataHelper {
     }
     
     public func getQuery<T:NSManagedObject>(request: NSFetchRequest<T>) -> Query<T> {
-        return Query(container: CoreDataHelper.generateContainer(), request:request)
+        return Query(container: CoreDataHelper.generateContainer(name: coreDataName), request:request)
     }
     
     public func read<T:NSManagedObject>(request: NSFetchRequest<T>, query: @escaping (Query<T>) -> Void){
