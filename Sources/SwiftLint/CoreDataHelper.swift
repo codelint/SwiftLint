@@ -10,17 +10,17 @@ import CoreData
 
 open class CoreDataHelper {
     
-    static let shared = CoreDataHelper()
+    public static let shared = CoreDataHelper()
     
-    lazy var persistentContainer: NSPersistentContainer = {
+    public lazy var persistentContainer: NSPersistentContainer = {
         CoreDataHelper.generateContainer()
     }()
     
-    lazy var reader: NSPersistentContainer = {
+    public lazy var reader: NSPersistentContainer = {
         CoreDataHelper.generateContainer()
     }()
     
-    static func generateContainer() -> NSPersistentContainer {
+    public static func generateContainer() -> NSPersistentContainer {
         let container = NSPersistentContainer(name: "going")
         // 3
         container.loadPersistentStores { _, error in
@@ -35,14 +35,14 @@ open class CoreDataHelper {
     }
 
     
-    func once<T:NSManagedObject>(request: NSFetchRequest<T>, action: @escaping (NSPersistentContainer) -> Void){
+    public func once<T:NSManagedObject>(request: NSFetchRequest<T>, action: @escaping (NSPersistentContainer) -> Void){
         
         let container = CoreDataHelper.generateContainer()
         
         action(container)
     }
     
-    func saveContext() {
+    public func saveContext() {
         // 1
         let context = persistentContainer.viewContext
         
@@ -62,18 +62,18 @@ open class CoreDataHelper {
         }
     }
     
-    func instance<T:NSManagedObject>() -> T? {
+    public func instance<T:NSManagedObject>() -> T? {
         return T(context: persistentContainer.viewContext)
     }
     
-    func once<T:NSManagedObject>(request: NSFetchRequest<T>, action: @escaping (NSManagedObjectContext) -> Void){
+    public func once<T:NSManagedObject>(request: NSFetchRequest<T>, action: @escaping (NSManagedObjectContext) -> Void){
         
         self.once(request: request) { (container: NSPersistentContainer) in
             action(container.viewContext)
         }
     }
     
-    func query<T:NSManagedObject>(request: NSFetchRequest<T>, query: @escaping (Query<T>) -> Void){
+    public func query<T:NSManagedObject>(request: NSFetchRequest<T>, query: @escaping (Query<T>) -> Void){
         
         self.once(request: request) { (container: NSPersistentContainer) in
             query(Query(container: container, request:request))
@@ -81,15 +81,15 @@ open class CoreDataHelper {
         
     }
     
-    func getQuery<T:NSManagedObject>(request: NSFetchRequest<T>) -> Query<T> {
+    public func getQuery<T:NSManagedObject>(request: NSFetchRequest<T>) -> Query<T> {
         return Query(container: CoreDataHelper.generateContainer(), request:request)
     }
     
-    func read<T:NSManagedObject>(request: NSFetchRequest<T>, query: @escaping (Query<T>) -> Void){
+    public func read<T:NSManagedObject>(request: NSFetchRequest<T>, query: @escaping (Query<T>) -> Void){
         query(Query(container: self.reader, request: request))
     }
     
-    class Query<T: NSManagedObject> {
+    public class Query<T: NSManagedObject> {
         
         let container: NSPersistentContainer
         var request: NSFetchRequest<T>
@@ -204,14 +204,14 @@ open class CoreDataHelper {
         
     }
     
-    func findBy<T: NSManagedObject>(request: NSFetchRequest<T>, conds: [String: String] = [String:String]()) -> [T] {
+    public func findBy<T: NSManagedObject>(request: NSFetchRequest<T>, conds: [String: String] = [String:String]()) -> [T] {
         
         let query = Query(container: persistentContainer, request: request)
         
         return query.findBy(conds: conds)
     }
     
-    func findByOne<T: NSManagedObject>(request: NSFetchRequest<T>, conds: [String: String] = [String:String]()) -> T? {
+    public func findByOne<T: NSManagedObject>(request: NSFetchRequest<T>, conds: [String: String] = [String:String]()) -> T? {
         
         let results = self.findBy(request: request, conds: conds)
         if results.count > 0 {
@@ -221,14 +221,14 @@ open class CoreDataHelper {
         }
     }
     
-    func findById<T: NSManagedObject>(request: NSFetchRequest<T>, id: String) -> T? {
+    public func findById<T: NSManagedObject>(request: NSFetchRequest<T>, id: String) -> T? {
         
         // let r: Result = T.fetchRequest()
         return findByOne(request: request, conds: ["id": id])
         
     }
     
-    func delete<T: NSManagedObject>(_ entity: T) {
+    public func delete<T: NSManagedObject>(_ entity: T) {
         persistentContainer.viewContext.delete(entity)
         saveContext()
     }
