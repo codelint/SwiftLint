@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-class CoreDataHelper {
+open class CoreDataHelper {
     
     static let shared = CoreDataHelper()
     
