@@ -112,7 +112,7 @@ open class CoreDataHelper {
             }
         }
         
-        func findBy(conds: [String: String?] = [String:String]()) -> [T] {
+        func findBy(conds: [String: String?] = [String:String](), orderBy: [String: Bool] = [:]) -> [T] {
             
             // let request = NSFetchRequest<T>(entityName: entityName.rawValue)
             
@@ -153,6 +153,12 @@ open class CoreDataHelper {
                 request.fetchLimit = limit
             }
             
+            var sorts: [NSSortDescriptor] = []
+            for (field, dir) in orderBy {
+                sorts.append(NSSortDescriptor(key: field, ascending: dir))
+            }
+            request.sortDescriptors = sorts
+            
             do {
                 results = try context.fetch(request)
             }catch{
@@ -160,6 +166,16 @@ open class CoreDataHelper {
             }
             
             return  results
+        }
+        
+        func findBy(conds: [String: String?], limit: Int?, orderBy: [String:Bool]) -> [T] {
+            var c = conds
+            
+            if let l = limit {
+                c = conds.add(key: "__limit", value: String(l))
+            }
+            
+            return self.findBy(conds: c, orderBy: orderBy)
         }
         
         func findByOne(conds: [String: String] = [String:String]()) -> T? {
