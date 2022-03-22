@@ -178,8 +178,8 @@ open class CoreDataHelper {
             return self.findBy(conds: c, orderBy: orderBy)
         }
         
-        func findByOne(conds: [String: String] = [String:String]()) -> T? {
-            let results = self.findBy(conds: conds)
+        func findByOne(conds: [String: String?], sort orderBy: [String:Bool] = [:]) -> T? {
+            let results = self.findBy(conds: conds, orderBy: orderBy)
             
             if results.count > 0 {
                 return results[0]
