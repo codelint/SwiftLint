@@ -7,6 +7,19 @@
 
 import Foundation
 
+public extension Dictionary{
+    
+    func add(key: Key, value: Value) -> Dictionary<Key, Value> {
+        
+        var newOne = self
+        
+        newOne[key] = value
+        
+        return newOne
+        
+    }
+}
+
 public extension Array {
     
     func groupBy(key: (Element) -> String?) -> [String: [Element]]{

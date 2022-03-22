@@ -124,7 +124,9 @@ open class CoreDataHelper {
             // request.predicate = NSPredicate(format: "name == %@", name)
             
             let predicate_str = conds.map { (kv: (key: String, value: String?)) -> String in
-                
+                if kv.key.starts(with: "__") {
+                    return ""
+                }
                 if let v  = kv.value {
                     var op = "=="
                     if v.starts(with: ">") {
@@ -138,10 +140,17 @@ open class CoreDataHelper {
                 }else{
                     return "\(kv.key)==nil"
                 }
-            }.joined(separator: " && ")
+                
+            }.filter({ str in
+                return str.count > 0
+            }).joined(separator: " && ")
             
             if predicate_str.count > 0 {
                 request.predicate = NSPredicate(format: predicate_str)
+            }
+            
+            if let limit_o = conds["__limit"], let limit_str = limit_o, let limit = Int(limit_str) {
+                request.fetchLimit = limit
             }
             
             do {
@@ -155,6 +164,7 @@ open class CoreDataHelper {
         
         func findByOne(conds: [String: String] = [String:String]()) -> T? {
             let results = self.findBy(conds: conds)
+            
             if results.count > 0 {
                 return results[0]
             }else{
