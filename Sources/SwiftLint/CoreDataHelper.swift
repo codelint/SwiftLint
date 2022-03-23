@@ -27,18 +27,27 @@ open class CoreDataHelper {
     
     var coreDataName = "default"
     
+    var genContainer: (String) -> NSPersistentContainer
+    
     public static let shared = CoreDataHelper("shared")
     
-    public init(_ name: String){
+    public init(_ name: String, container c: ((String) -> NSPersistentContainer)? = nil){
         coreDataName = name
+        if let generate = c {
+            genContainer = generate
+        }else {
+            genContainer = { name in
+                return CoreDataHelper.generateContainer(name: name)
+            }
+        }
     }
     
     public lazy var persistentContainer: NSPersistentContainer = {
-        CoreDataHelper.generateContainer(name: coreDataName)
+        genContainer(coreDataName)
     }()
     
     public lazy var reader: NSPersistentContainer = {
-        CoreDataHelper.generateContainer(name: coreDataName)
+        genContainer(coreDataName)
     }()
     
     public static func generateContainer(name: String) -> NSPersistentContainer {
@@ -58,7 +67,7 @@ open class CoreDataHelper {
     
     public func once<T:NSManagedObject>(request: NSFetchRequest<T>, action: @escaping (NSPersistentContainer) -> Void){
         
-        let container = CoreDataHelper.generateContainer(name: coreDataName)
+        let container = genContainer(coreDataName)
         
         action(container)
     }
