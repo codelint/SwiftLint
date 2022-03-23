@@ -8,6 +8,21 @@
 import Foundation
 import CoreData
 
+
+public protocol  DataSourceProtocol {
+    
+    associatedtype Entity
+    
+    func findBy(conds: [String: String?], limit: Int, offset: Int, orderBy: [String: Bool]) -> [Entity]
+    
+    func refresh(_ t: Entity)
+    
+    func flush()
+    
+    func delete(_ entity: Entity)
+    
+}
+
 open class CoreDataHelper {
     
     var coreDataName = "default"
@@ -95,7 +110,9 @@ open class CoreDataHelper {
         query(Query(container: self.reader, request: request))
     }
     
-    public class Query<T: NSManagedObject> {
+    public class Query<T: NSManagedObject>: DataSourceProtocol {
+        
+        public typealias Entity = T
         
         let container: NSPersistentContainer
         var request: NSFetchRequest<T>
@@ -112,16 +129,13 @@ open class CoreDataHelper {
             }
         }
         
-        func findBy(conds: [String: String?] = [String:String](), orderBy: [String: Bool] = [:]) -> [T] {
-            
-            // let request = NSFetchRequest<T>(entityName: entityName.rawValue)
-            
-            // let request = T.fetchRequest()
-            // let request: NSFetchRequest<EnCartItem> = EnCartItem.fetchRequest()
+        func findBy(conds: [String: String?], limit: Int?, orderBy: [String:Bool]) -> [T] {
+            return self.findBy(conds: conds, limit: limit ?? 0, offset: 0, orderBy: orderBy)
+        }
+        
+        public func findBy(conds: [String : String?] = [:], limit: Int = 0, offset: Int = 0, orderBy: [String : Bool] = [:]) -> [T] {
             let context = container.viewContext
             var results : [T]
-            
-            // request.predicate = NSPredicate(format: "name == %@", name)
             
             let predicate_str = conds.map { (kv: (key: String, value: String?)) -> String in
                 if kv.key.starts(with: "__") {
@@ -149,8 +163,12 @@ open class CoreDataHelper {
                 request.predicate = NSPredicate(format: predicate_str)
             }
             
-            if let limit_o = conds["__limit"], let limit_str = limit_o, let limit = Int(limit_str) {
+            if limit > 0 {
                 request.fetchLimit = limit
+            }
+            
+            if offset > 0 {
+                request.fetchOffset = offset
             }
             
             var sorts: [NSSortDescriptor] = []
@@ -168,16 +186,6 @@ open class CoreDataHelper {
             return  results
         }
         
-        func findBy(conds: [String: String?], limit: Int?, orderBy: [String:Bool]) -> [T] {
-            var c = conds
-            
-            if let l = limit {
-                c = conds.add(key: "__limit", value: String(l))
-            }
-            
-            return self.findBy(conds: c, orderBy: orderBy)
-        }
-        
         func findByOne(conds: [String: String] = [:], sort orderBy: [String: Bool] = [:]) -> T? {
             let results = self.findBy(conds: conds, limit: 1, orderBy: orderBy)
             
@@ -189,15 +197,14 @@ open class CoreDataHelper {
         }
         
         func findById(id: String) -> T? {
-            // let r: Result = T.fetchRequest()
             return findByOne(conds: ["id": id])
         }
         
-        func refresh(_ t: T){
+        public func refresh(_ t: T){
             container.viewContext.refresh(t, mergeChanges: true)
         }
         
-        func flush(){
+        public func flush(){
             // 1
             let context = container.viewContext
             
@@ -229,7 +236,7 @@ open class CoreDataHelper {
             }
         }
         
-        func delete<T: NSManagedObject>(_ entity: T) {
+        public func delete(_ entity: T) {
             container.viewContext.delete(entity)
             flush()
         }
