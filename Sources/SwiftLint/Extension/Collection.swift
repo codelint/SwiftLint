@@ -52,7 +52,7 @@ public extension Array {
     func asyncEach(
         _ arr: [Element],
         from: Int = 0,
-        next: @escaping ((Element, @escaping () -> Void) -> Void),
+        next: @escaping ((Element, Int, @escaping () -> Void) -> Void),
         first: ((Element, @escaping () -> Void) -> Void)? = nil,
         last: ( (Element) -> Void)? = nil
     ) {
@@ -60,20 +60,20 @@ public extension Array {
             let f = first == nil ? { _, next in
                 next()
             } : first!
-            let nextIdx = from + 1
             
-            f(arr[from]) {
-                while from < arr.count {
-                    next(arr[from]) {
-                        if nextIdx < arr.count {
-                            self.asyncEach(self, from: nextIdx, next: next, last: last)
-                        }else {
-                            if let l = last {
-                                l(arr[from])
-                            }
+            f(arr[from]) { 
+                let nextIdx = from + 1
+                next(arr[from], from) {
+                    if nextIdx < arr.count {
+                        // print("\(nextIdx) < \(arr.count)")
+                        self.asyncEach(self, from: nextIdx, next: next, last: last)
+                    }else {
+                        if let l = last {
+                            l(arr[from])
                         }
                     }
                 }
+                
             }
         }
     }
