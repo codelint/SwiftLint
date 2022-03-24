@@ -252,7 +252,7 @@ open class CoreDataHelper {
         
     }
     
-    public func findBy<T: NSManagedObject>(request: NSFetchRequest<T>, conds: [String: String] = [String:String](), limit limit : Int? = nil, sort orderBy: [String: Bool] = [:]) -> [T] {
+    public func findBy<T: NSManagedObject>(request: NSFetchRequest<T>, conds: [String: String] = [String:String](), limit : Int? = nil, sort orderBy: [String: Bool] = [:]) -> [T] {
         
         let query = Query(container: persistentContainer, request: request)
         
