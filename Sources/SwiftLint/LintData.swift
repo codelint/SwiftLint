@@ -36,6 +36,17 @@ open class LintData: LintDataSourceProtocol {
         }
     }
     
+    public struct Key: Equatable {
+        let rawValue: String
+        init(_ r: String ) {
+            self.rawValue = r
+        }
+        
+        public static func == (lhs: Self, rhs: Self) -> Bool {
+            return lhs.rawValue == rhs.rawValue
+        }
+    }
+    
     static var s = LintData()
     
     let source: LintDataSourceProtocol
@@ -83,8 +94,5 @@ open class LintData: LintDataSourceProtocol {
     public func get<Value: Decodable>(for k: Key) -> Value?{
         return self.get(k.rawValue)
     }
-    
-    public enum Key: String {
-        case name, email, phone, password, create_time, update_time
-    }
+
 }
