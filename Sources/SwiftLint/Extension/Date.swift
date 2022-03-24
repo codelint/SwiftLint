@@ -9,6 +9,16 @@ import Foundation
 
 public extension Date {
     
+    static func from (_ from: String, format: String = "YYYY-MM-dd HH:mm:ss", zone: Locale? = nil) -> Date {
+        let formatter = DateFormatter()
+        if let z = zone {
+            formatter.locale = z
+        }
+        formatter.dateFormat = format
+        let date = formatter.date(from: from)
+        return date!
+    }
+    
     var datetimeString: String {
         return self.string(format: "YYYY-MM-dd HH:mm:ss")
     }
@@ -35,5 +45,9 @@ public extension Date {
         formatter.timeStyle = DateFormatter.Style.short
         formatter.dateFormat = format
         return formatter.string(from: self)
+    }
+    
+    func days(to: Date) -> Int {
+        return (abs(Date.from(to.string(format: "YYYY-MM-dd 00:00:00")).int - Date.from(self.string(format: "YYYY-MM-dd 00:00:00")).int) + 1)/86400
     }
 }
