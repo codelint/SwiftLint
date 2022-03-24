@@ -51,4 +51,23 @@ class CollectionTests: XCTestCase {
         XCTAssertEqual(lastE, 0)
     }
     
+    func testGroupBy() {
+        let arr = [5, 2, 0, 1, 3, 1, 4]
+        
+        let groups = arr.groupBy { e in
+            "\(e%2)"
+        }
+        
+        for (k, v) in groups {
+            switch(k){
+            case "0":
+                XCTAssertEqual(v.count, 3)
+            case "1":
+                XCTAssertEqual(v.count, 4)
+            default:
+                XCTAssertTrue(false)
+            }
+        }
+    }
+    
 }
