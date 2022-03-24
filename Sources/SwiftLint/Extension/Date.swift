@@ -61,7 +61,19 @@ public extension Date {
         return formatter.string(from: self)
     }
     
+    func hours(to: Date) -> Int {
+        return (abs(Date.from(to.string(format: "YYYY-MM-dd HH:00:00")).int - Date.from(self.string(format: "YYYY-MM-dd HH:00:00")).int))/3600
+    }
+    
+    func minutes(to: Date) -> Int {
+        return (abs(Date.from(to.string(format: "YYYY-MM-dd HH:mm:00")).int - Date.from(self.string(format: "YYYY-MM-dd HH:mm:00")).int))/60
+    }
+    
+    func seconds(to: Date) -> Int {
+        return abs(to.int - self.int)
+    }
+    
     func days(to: Date) -> Int {
-        return (abs(Date.from(to.string(format: "YYYY-MM-dd 00:00:00")).int - Date.from(self.string(format: "YYYY-MM-dd 00:00:00")).int) + 1)/86400
+        return (abs(Date.from(to.string(format: "YYYY-MM-dd 00:00:00")).int - Date.from(self.string(format: "YYYY-MM-dd 00:00:00")).int))/86400
     }
 }
