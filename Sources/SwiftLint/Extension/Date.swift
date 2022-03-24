@@ -42,6 +42,14 @@ public extension Date {
         Int(self.timeIntervalSince1970)
     }
     
+    var month: Int {
+        return Int(self.string(format: "MM"))!
+    }
+    
+    var year: Int {
+        return Int(self.string(format: "YYYY"))!
+    }
+    
     func string(format: String = "YYYY-MM-dd HH:mm:ss", zone: Locale? = nil) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = DateFormatter.Style.medium

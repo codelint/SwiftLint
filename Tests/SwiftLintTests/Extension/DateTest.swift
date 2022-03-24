@@ -10,6 +10,13 @@ import XCTest
 
 class DateTests: XCTestCase {
     
+    func testMonth() {
+        XCTAssertEqual(Date.from("2022-03-24 22:23:38", zone: Locale(identifier: "zh_CN")).month, 3)
+        XCTAssertEqual(Date.from("2022-11-24 22:23:38", zone: Locale(identifier: "zh_CN")).month, 11)
+        XCTAssertEqual(Date.from("1986-11-24 22:23:38", zone: Locale(identifier: "zh_CN")).year, 1986)
+        XCTAssertEqual(Date.from("111-11-24 22:23:38", zone: Locale(identifier: "zh_CN")).year, 111)
+    }
+    
     func testDateString() {
         XCTAssertEqual("2022-03-24 22:23:38", Date(timeIntervalSince1970: 1648131818).string(format: "YYYY-MM-dd HH:mm:ss", zone: Locale(identifier: "zh_CN")))
     }
