@@ -62,11 +62,11 @@ public extension Date {
     }
     
     func hours(to: Date) -> Int {
-        return (abs(Date.from(to.string(format: "YYYY-MM-dd HH:00:00")).int - Date.from(self.string(format: "YYYY-MM-dd HH:00:00")).int))/3600
+        return abs(to.int - self.int)/3600
     }
     
     func minutes(to: Date) -> Int {
-        return (abs(Date.from(to.string(format: "YYYY-MM-dd HH:mm:00")).int - Date.from(self.string(format: "YYYY-MM-dd HH:mm:00")).int))/60
+        return abs(to.int - self.int)/60
     }
     
     func seconds(to: Date) -> Int {
