@@ -15,7 +15,7 @@ protocol LintDataSourceProtocol {
     
 }
 
-class LintData: LintDataSourceProtocol {
+open class LintData: LintDataSourceProtocol {
     
     class StandardData: LintDataSourceProtocol {
         func set<Value: Encodable>(_ k: String, with v: Value?){
