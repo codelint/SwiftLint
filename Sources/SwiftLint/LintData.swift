@@ -38,7 +38,7 @@ open class LintData: LintDataSourceProtocol {
     
     public struct Key: Equatable {
         let rawValue: String
-        init(_ r: String ) {
+        public init(_ r: String ) {
             self.rawValue = r
         }
         
