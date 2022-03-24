@@ -9,6 +9,9 @@ import Foundation
 
 public extension Date {
     
+//    static let FMT_ISO = "YYYY-MM-dd HH:mm:ss"
+//    static let FMT_ISO_DATE = "YYYY-MM-dd"
+    
     static func from (_ from: String, format: String = "YYYY-MM-dd HH:mm:ss", zone: Locale? = nil) -> Date {
         let formatter = DateFormatter()
         if let z = zone {

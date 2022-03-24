@@ -10,6 +10,10 @@ import XCTest
 
 class DateTests: XCTestCase {
     
+    func testDateString() {
+        XCTAssertEqual("2022-03-24 22:23:38", Date(timeIntervalSince1970: 1648131818).string(format: "YYYY-MM-dd HH:mm:ss"))
+    }
+    
     func testDateFrom() {
         // 1648131359861
         // zh_CN
