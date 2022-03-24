@@ -42,7 +42,7 @@ class LintData: LintDataSourceProtocol {
     
     let prefix: String
     
-    init(prefix pfx: String = "lint", source src: LintDataSourceProtocol? = nil) {
+    init(prefix pfx: String = "swiftlint", source src: LintDataSourceProtocol? = nil) {
         self.prefix = pfx
         
         self.source = (src == nil) ? StandardData() : src!
