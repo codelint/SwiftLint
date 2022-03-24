@@ -9,6 +9,20 @@ import Foundation
 import CommonCrypto
 
 public extension String {
+    
+    func ends(with: String) -> Bool {
+        return self.hasSuffix(with)
+    }
+    
+    func ends(with: [String]) -> Bool {
+        for w in with {
+            if self.hasSuffix(w){
+                return true
+            }
+        }
+        return false
+    }
+    
     func starts(with: [String]) -> Bool {
         for w in with {
             if self.starts(with: w) {
@@ -44,9 +58,9 @@ public extension String {
     /**
      * generate md5 string
      */
-    func md5() -> String {
-        //todo
-        return self
-    }
+//    func md5() -> String {
+//        //todo
+//        return self
+//    }
     
 }
