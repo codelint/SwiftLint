@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension String {
+public extension String {
     func starts(with: [String]) -> Bool {
         for w in with {
             if self.starts(with: w) {
