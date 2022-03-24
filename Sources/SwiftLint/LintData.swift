@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol LintDataSourceProtocol {
+public protocol LintDataSourceProtocol {
     
     func set<Value: Encodable>(_ k: String, with v: Value?)
     
@@ -17,8 +17,8 @@ protocol LintDataSourceProtocol {
 
 open class LintData: LintDataSourceProtocol {
     
-    class StandardData: LintDataSourceProtocol {
-        func set<Value: Encodable>(_ k: String, with v: Value?){
+    public class StandardData: LintDataSourceProtocol {
+        public func set<Value: Encodable>(_ k: String, with v: Value?){
             if let encoded = try? JSONEncoder().encode(v) {
                 // self.set(k, with: encoded)
                 UserDefaults.standard.set(encoded, forKey: k)
@@ -26,7 +26,7 @@ open class LintData: LintDataSourceProtocol {
             }
         }
         
-        func get<Value: Decodable>(_ k: String) -> Value?{
+        public func get<Value: Decodable>(_ k: String) -> Value?{
             if let data = UserDefaults.standard.data(forKey: k) {
                 if let decoded = try? JSONDecoder().decode(Value.self, from: data) {
                     return decoded
@@ -42,21 +42,21 @@ open class LintData: LintDataSourceProtocol {
     
     let prefix: String
     
-    init(prefix pfx: String = "swiftlint", source src: LintDataSourceProtocol? = nil) {
+    public init(prefix pfx: String = "swiftlint", source src: LintDataSourceProtocol? = nil) {
         self.prefix = pfx
         
         self.source = (src == nil) ? StandardData() : src!
     }
     
-    func set<Value: Encodable>(_ k: String, with v: Value?){
+    public func set<Value: Encodable>(_ k: String, with v: Value?){
         return source.set(k, with: v)
     }
     
-    func get<Value: Decodable>(_ k: String) -> Value?{
+    public func get<Value: Decodable>(_ k: String) -> Value?{
         return source.get(k)
     }
     
-    subscript<Value: Codable>(index: String) -> Value? {
+    public subscript<Value: Codable>(index: String) -> Value? {
         get {
             return self.get(index)
         }
@@ -66,7 +66,7 @@ open class LintData: LintDataSourceProtocol {
         }
     }
     
-    subscript<Value: Codable>(index: Key) -> Value? {
+    public subscript<Value: Codable>(index: Key) -> Value? {
         get {
             return self.get("\(prefix).\(index.rawValue)")
         }
@@ -76,15 +76,15 @@ open class LintData: LintDataSourceProtocol {
         }
     }
     
-    func set<Value: Encodable>(for k: Key, with v: Value?){
+    public func set<Value: Encodable>(for k: Key, with v: Value?){
         self.set(k.rawValue, with: v)
     }
     
-    func get<Value: Decodable>(for k: Key) -> Value?{
+    public func get<Value: Decodable>(for k: Key) -> Value?{
         return self.get(k.rawValue)
     }
     
-    enum Key: String {
+    public enum Key: String {
         case name, email, phone, password, create_time, update_time
     }
 }
