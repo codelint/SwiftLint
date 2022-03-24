@@ -15,12 +15,14 @@ public protocol LintDataSourceProtocol {
     
 }
 
+/**
+ * Key/Value Store , default save in UserDefaults.standard
+ */
 open class LintData: LintDataSourceProtocol {
     
     public class StandardData: LintDataSourceProtocol {
         public func set<Value: Encodable>(_ k: String, with v: Value?){
             if let encoded = try? JSONEncoder().encode(v) {
-                // self.set(k, with: encoded)
                 UserDefaults.standard.set(encoded, forKey: k)
                 UserDefaults.standard.synchronize()
             }
