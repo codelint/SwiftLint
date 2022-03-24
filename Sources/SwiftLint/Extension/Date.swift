@@ -42,11 +42,14 @@ public extension Date {
         Int(self.timeIntervalSince1970)
     }
     
-    func string(format: String = "YYYY-MM-dd HH:mm:ss") -> String {
+    func string(format: String = "YYYY-MM-dd HH:mm:ss", zone: Locale? = nil) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = DateFormatter.Style.medium
         formatter.timeStyle = DateFormatter.Style.short
         formatter.dateFormat = format
+        if let z = zone {
+            formatter.locale = z
+        }
         return formatter.string(from: self)
     }
     

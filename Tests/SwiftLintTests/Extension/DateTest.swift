@@ -11,7 +11,7 @@ import XCTest
 class DateTests: XCTestCase {
     
     func testDateString() {
-        XCTAssertEqual("2022-03-24 22:23:38", Date(timeIntervalSince1970: 1648131818).string(format: "YYYY-MM-dd HH:mm:ss"))
+        XCTAssertEqual("2022-03-24 22:23:38", Date(timeIntervalSince1970: 1648131818).string(format: "YYYY-MM-dd HH:mm:ss", zone: Locale(identifier: "zh_CN")))
     }
     
     func testDateFrom() {
