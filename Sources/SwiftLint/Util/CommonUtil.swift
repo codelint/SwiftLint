@@ -9,14 +9,18 @@ import Foundation
 
 open class CommonUtil {
     
+    public init() {
+        
+    }
+    
 }
 
 extension CommonUtil {
-    func wait(for sec: Int, callback: @escaping () -> Void){
+    public func wait(for sec: Int, callback: @escaping () -> Void){
         self.wait(for: Double(sec), callback)
     }
     
-    func wait(for sec: Double, _ callback: @escaping () -> Void){
+    public func wait(for sec: Double, _ callback: @escaping () -> Void){
         if sec > 0.001 {
             DispatchQueue.main.asyncAfter(deadline: .now() + sec) {
                callback()
@@ -31,27 +35,27 @@ extension CommonUtil {
  *  logger helper
  */
 extension CommonUtil {
-    enum LogLevel {
+    public enum LogLevel {
         case info,debug,error,warn
     }
     
-    static func log(_ content: Any, _ level: LogLevel = .info){
+    public func log(_ content: Any, _ level: LogLevel = .info){
         print("[\(level)] \(content)")
     }
     
-    static func i(_ content: Any){
+    public func i(_ content: Any){
         log(content, .info)
     }
     
-    static func d(_ content: Any){
+    public func d(_ content: Any){
         log(content, .debug)
     }
     
-    static func e(_ content: Any){
+    public func e(_ content: Any){
         log(content, .error)
     }
     
-    static func w(_ content: Any){
+    public func w(_ content: Any){
         log(content, .warn)
     }
 }
