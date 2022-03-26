@@ -30,6 +30,14 @@ public extension Date {
         return self.string(format: "YYYY-MM-dd")
     }
     
+    var iso8601: String {
+        return self.string(format: "YYYY-MM-dd HH:mm:ss")
+    }
+    
+    var isoDate: String {
+        return self.string(format: "YYYY-MM-dd")
+    }
+    
     var int64: Int64 {
         Int64(self.timeIntervalSince1970)
     }
