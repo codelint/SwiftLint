@@ -22,7 +22,7 @@ public extension Dictionary{
         return self.filter { (key, value) in keys.contains(where: { $0 == key }) }
     }
     
-    func except(keys: [Key]) -> Dictionary<Key, Value {
+    func except(keys: [Key]) -> Dictionary<Key, Value> {
         return self.filter { (key, value) in !keys.contains(where: { $0 == key }) }
     }
 }
