@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Encodable{
+public extension Encodable{
     var stringified: String? {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
