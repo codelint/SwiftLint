@@ -12,11 +12,14 @@ public extension Dictionary{
     func add(key: Key, value: Value) -> Dictionary<Key, Value> {
         
         var newOne = self
-        
         newOne[key] = value
         
         return newOne
         
+    }
+    
+    func only(keys: [Key]) -> Dictionary<Key, Value>{
+        return self.filter { (key, value) in keys.contains(where: { $0 == key }) }
     }
 }
 

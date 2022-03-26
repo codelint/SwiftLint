@@ -19,6 +19,22 @@ class CollectionTests: XCTestCase {
         super.tearDown()
     }
     
+    func testOnly() {
+        let dict = [
+            "a": 234,
+            "b": 2,
+            "c": 33,
+            "d": 324
+        ]
+        
+        let actual = dict.only(keys: ["a", "b"])
+        
+        XCTAssertEqual(actual["a"], dict["a"])
+        XCTAssertEqual(actual["b"], dict["b"])
+        XCTAssertNil(actual["c"])
+        XCTAssertNil(actual["d"])
+    }
+    
     func testArrayAsyncEach() {
         // helper.findBy(request: NSFetchRequest<User>)
         let arr = [5, 2, 0, 1, 3, 1, 4]
