@@ -138,7 +138,7 @@ open class CoreDataHelper {
             }
         }
         
-        func findBy(conds: [String: String?], limit: Int?, orderBy: [String:Bool]) -> [T] {
+        public func findBy(conds: [String: String?], limit: Int?, orderBy: [String:Bool]) -> [T] {
             return self.findBy(conds: conds, limit: limit ?? 0, offset: 0, orderBy: orderBy)
         }
         
@@ -195,7 +195,7 @@ open class CoreDataHelper {
             return  results
         }
         
-        func findByOne(conds: [String: String] = [:], sort orderBy: [String: Bool] = [:]) -> T? {
+        public func findByOne(conds: [String: String] = [:], sort orderBy: [String: Bool] = [:]) -> T? {
             let results = self.findBy(conds: conds, limit: 1, orderBy: orderBy)
             
             if results.count > 0 {
@@ -205,7 +205,7 @@ open class CoreDataHelper {
             }
         }
         
-        func findById(id: String) -> T? {
+        public func findById(id: String) -> T? {
             return findByOne(conds: ["id": id])
         }
         
@@ -233,7 +233,7 @@ open class CoreDataHelper {
             }
         }
         
-        func instance(conds: [String: String]? = nil) -> T? {
+        public func instance(conds: [String: String]? = nil) -> T? {
             if let cri = conds {
                 if let ins = self.findByOne(conds: cri) {
                     return ins
