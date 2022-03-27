@@ -29,6 +29,9 @@ class StringTests: XCTestCase {
         XCTAssertTrue("hello world!!!".match(regex: "[a-zA-Z ]*!!!"))
         XCTAssertFalse("hello world!!!".match(regex: "[a-zA-Z]*!!!"))
         XCTAssertFalse("hello world!!!".match(regex: "hello"))
+        XCTAssertTrue("1986-09-08 00:00:00".match(regex: "[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}"))
+        XCTAssertFalse("1986-9-08 00:00:00".match(regex: "[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}"))
+        XCTAssertTrue("186-09-08 00:00:00".match(regex: "[0-9]{1,4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}"))
     }
     
     func testReplace() {

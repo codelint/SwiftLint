@@ -12,15 +12,31 @@ public extension Date {
 //    static let FMT_ISO = "YYYY-MM-dd HH:mm:ss"
 //    static let FMT_ISO_DATE = "YYYY-MM-dd"
     
-    static func from (_ from: String, format: String = "YYYY-MM-dd HH:mm:ss", zone: Locale? = nil) -> Date? {
+    static func from (_ from: String, format: String? = nil, zone: Locale? = nil) -> Date? {
         let src = from.replace(search: "\\.[0-9]{3,}.*$", with: "").replace(search: "[a-zA-Z]", with: " ")
-        let formatter = DateFormatter()
-        if let z = zone {
-            formatter.locale = z
+        var fmt: String? = format
+        if fmt == nil {
+            if src.match(regex: "[0-9]{1,4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}") {
+                fmt = "YYYY-MM-dd HH:mm:ss"
+            }
+            
+            if src.match(regex: "[0-9]{1,4}-[0-9]{2}-[0-9]{2}") {
+                fmt = "YYYY-MM-dd"
+            }
         }
-        formatter.dateFormat = format
-        let date = formatter.date(from: src)
-        return date
+        
+        if let f = fmt {
+            let formatter = DateFormatter()
+            if let z = zone {
+                formatter.locale = z
+            }
+            formatter.dateFormat = f
+            let date = formatter.date(from: src)
+            return date
+        }else{
+            return nil
+        }
+        
     }
     
     var datetimeString: String {
