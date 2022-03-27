@@ -13,12 +13,13 @@ public extension Date {
 //    static let FMT_ISO_DATE = "YYYY-MM-dd"
     
     static func from (_ from: String, format: String = "YYYY-MM-dd HH:mm:ss", zone: Locale? = nil) -> Date {
+        let src = from.replace(search: "\\.[0-9]{3,}.*$", with: "").replace(search: "[a-zA-Z]", with: " ")
         let formatter = DateFormatter()
         if let z = zone {
             formatter.locale = z
         }
         formatter.dateFormat = format
-        let date = formatter.date(from: from)
+        let date = formatter.date(from: src)
         return date!
     }
     

@@ -25,6 +25,9 @@ class DateTests: XCTestCase {
         // 1648131359861
         // zh_CN
         XCTAssertEqual(1648131818, Date.from("2022-03-24 22:23:38", zone: Locale(identifier: "zh_CN")).int)
+        // 2022-03-23T17:56:28.268Z
+        XCTAssertEqual(1648029388, Date.from("2022-03-23T17:56:28.268Z",zone: Locale(identifier: "zh_CN")).int)
+        
     }
     
     func testDays() {

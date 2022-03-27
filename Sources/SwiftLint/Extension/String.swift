@@ -38,6 +38,17 @@ public extension String {
         return pre.evaluate(with: self);
     }
     
+    func replace(search pattern: String, with newOne: String, count: Int? = nil) -> String {
+        if let regex = try? NSRegularExpression(
+            pattern: pattern,
+            options: []
+        ) {
+            
+            return regex.stringByReplacingMatches(in: self, range: NSRange(0..<self.utf8.count), withTemplate: newOne)
+        }
+        return self
+    }
+    
     /**
      * base64 string decode
      */
