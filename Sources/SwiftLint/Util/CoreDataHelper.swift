@@ -233,7 +233,7 @@ open class CoreDataHelper {
             }
         }
         
-        public func instance(conds: [String: String]? = nil) -> T? {
+        func instance(conds: [String: String]? = nil) -> T? {
             if let cri = conds {
                 if let ins = self.findByOne(conds: cri) {
                     return ins
@@ -276,6 +276,18 @@ open class CoreDataHelper {
         // let r: Result = T.fetchRequest()
         return findByOne(request: request, conds: ["id": id])
         
+    }
+    
+    func instance<T: NSManagedObject>(request: NSFetchRequest<T>, conds: [String: String]? = nil) -> T? {
+        if let cri = conds {
+            if let ins = self.findByOne(request: request, conds: cri) {
+                return ins
+            }else{
+                return T(context: self.persistentContainer.viewContext)
+            }
+        }else{
+            return T(context: self.persistentContainer.viewContext)
+        }
     }
     
     public func delete<T: NSManagedObject>(_ entity: T) {
