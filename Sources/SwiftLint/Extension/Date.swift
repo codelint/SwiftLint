@@ -12,7 +12,7 @@ public extension Date {
 //    static let FMT_ISO = "YYYY-MM-dd HH:mm:ss"
 //    static let FMT_ISO_DATE = "YYYY-MM-dd"
     
-    static func from (_ from: String, format: String = "YYYY-MM-dd HH:mm:ss", zone: Locale? = nil) -> Date {
+    static func from (_ from: String, format: String = "YYYY-MM-dd HH:mm:ss", zone: Locale? = nil) -> Date? {
         let src = from.replace(search: "\\.[0-9]{3,}.*$", with: "").replace(search: "[a-zA-Z]", with: " ")
         let formatter = DateFormatter()
         if let z = zone {
@@ -20,7 +20,7 @@ public extension Date {
         }
         formatter.dateFormat = format
         let date = formatter.date(from: src)
-        return date!
+        return date
     }
     
     var datetimeString: String {
@@ -83,6 +83,11 @@ public extension Date {
     }
     
     func days(to: Date) -> Int {
-        return (abs(Date.from(to.string(format: "YYYY-MM-dd 00:00:00")).int - Date.from(self.string(format: "YYYY-MM-dd 00:00:00")).int))/86400
+        if let end = Date.from(to.string(format: "YYYY-MM-dd 00:00:00")), let start = Date.from(self.string(format: "YYYY-MM-dd 00:00:00")) {
+            return (abs(end.int - start.int))/86400
+        }else{
+            return 0
+        }
+        // return (abs(Date.from(to.string(format: "YYYY-MM-dd 00:00:00")).int - Date.from(self.string(format: "YYYY-MM-dd 00:00:00")).int))/86400
     }
 }
