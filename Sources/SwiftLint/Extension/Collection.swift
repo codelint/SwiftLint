@@ -27,7 +27,21 @@ public extension Dictionary{
     }
 }
 
+public extension Array where Element: Equatable {
+    
+    func contains(elements: [Element]) -> Bool{
+        let filters = elements.filter { e in
+            return self.contains(where: { $0 == e })
+        }
+        
+        return filters.count == elements.count
+    }
+    
+}
+
 public extension Array {
+    
+
     
     func groupBy(key: (Element) -> String?) -> [String: [Element]]{
         var results = [String: [Element]]()

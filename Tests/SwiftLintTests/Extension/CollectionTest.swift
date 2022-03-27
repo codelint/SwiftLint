@@ -19,6 +19,15 @@ class CollectionTests: XCTestCase {
         super.tearDown()
     }
     
+    func testArrayContains() {
+        let arr = ["a", "b", "c", "i", "love", "ray"]
+        
+        XCTAssertTrue(arr.contains(elements: ["a"]))
+        XCTAssertTrue(arr.contains(elements: ["a", "love"]))
+        XCTAssertFalse(arr.contains(elements: ["alove"]))
+        XCTAssertFalse(arr.contains(elements: ["a", "alove"]))
+    }
+    
     func testOnly() {
         let dict = [
             "a": 234,
