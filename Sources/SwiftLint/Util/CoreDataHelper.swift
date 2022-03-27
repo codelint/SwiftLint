@@ -278,7 +278,7 @@ open class CoreDataHelper {
         
     }
     
-    func instance<T: NSManagedObject>(request: NSFetchRequest<T>, conds: [String: String]? = nil) -> T? {
+    public func instance<T: NSManagedObject>(request: NSFetchRequest<T>, conds: [String: String]? = nil) -> T? {
         if let cri = conds {
             if let ins = self.findByOne(request: request, conds: cri) {
                 return ins
