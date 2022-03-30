@@ -9,6 +9,10 @@ import Foundation
 
 public extension Encodable{
     var stringified: String? {
+        self.stringify()
+    }
+    
+    func stringify() -> String? {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         guard let data = try? encoder.encode(self) else { return nil }
