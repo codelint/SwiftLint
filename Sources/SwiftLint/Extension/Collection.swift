@@ -37,7 +37,7 @@ public extension Array where Element: Equatable {
         return filters.count == elements.count
     }
     
-    func accept(e: Element) -> Self {
+    func except(e: Element) -> Self {
         return self.filter({ $0 != e })
     }
     
