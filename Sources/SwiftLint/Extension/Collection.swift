@@ -37,6 +37,14 @@ public extension Array where Element: Equatable {
         return filters.count == elements.count
     }
     
+    func accept(e: Element) -> Self {
+        return self.filter({ $0 != e })
+    }
+    
+    func only(e: Element) -> Self {
+        return self.filter({ $0 == e })
+    }
+    
 }
 
 public extension Array {
