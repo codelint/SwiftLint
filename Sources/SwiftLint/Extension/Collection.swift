@@ -25,6 +25,19 @@ public extension Dictionary{
     func except(keys: [Key]) -> Dictionary<Key, Value> {
         return self.filter { (key, value) in !keys.contains(where: { $0 == key }) }
     }
+    
+}
+
+public extension Dictionary where Key: StringProtocol {
+    func keyStringify() -> [String: Value] {
+        var dict: [String: Value] = [:]
+        
+        self.forEach { (key, value) in
+            dict[key.description] = value
+        }
+        
+        return dict
+    }
 }
 
 public extension Array where Element: Equatable {
@@ -48,8 +61,6 @@ public extension Array where Element: Equatable {
 }
 
 public extension Array {
-    
-
     
     func groupBy(key: (Element) -> String?) -> [String: [Element]]{
         var results = [String: [Element]]()
