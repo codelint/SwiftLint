@@ -142,67 +142,6 @@ open class CoreDataHelper {
             return self.findBy(conds: conds, limit: limit ?? 0, offset: 0, orderBy: orderBy)
         }
         
-        public func findBy(conds: [String: [String]?], limit: Int = 0, offset: Int = 0, orderBy: [String : Bool] = [:]) -> [T] {
-            let context = container.viewContext
-            var results : [T]
-            
-            let predicate_str = conds.map { (kv: (key: String, value: [String]?)) -> String in
-                if kv.key.starts(with: "__") {
-                    return ""
-                }
-                if let opAndValue  = kv.value {
-                    if opAndValue.count < 1 {
-                        return "\(kv.key)==nil"
-                    }
-                    var op = opAndValue.count > 1 ? opAndValue[0] : "=="
-                    var vv = opAndValue.count > 1 ? opAndValue[1] : opAndValue[0]
-                    switch(op){
-                    case "~=":
-                        op = " IN "
-                        if let values = [String].fromJSON(with: vv) {
-                            vv = "{\(values.map({ "'\($0)'" }).joined(separator: ","))}"
-                        }else {
-                            vv = "{}"
-                        }
-                    default:
-                        vv = "'\(vv)'"
-                    }
-                    return "\(kv.key)\(op)\(vv)"
-                }else{
-                    return "\(kv.key)==nil"
-                }
-                
-            }.filter({ str in
-                return str.count > 0
-            }).joined(separator: " && ")
-            
-            if predicate_str.count > 0 {
-                request.predicate = NSPredicate(format: predicate_str)
-            }
-            
-            if limit > 0 {
-                request.fetchLimit = limit
-            }
-            
-            if offset > 0 {
-                request.fetchOffset = offset
-            }
-            
-            var sorts: [NSSortDescriptor] = []
-            for (field, dir) in orderBy {
-                sorts.append(NSSortDescriptor(key: field, ascending: dir))
-            }
-            request.sortDescriptors = sorts
-            
-            do {
-                results = try context.fetch(request)
-            }catch{
-                return  [T]()
-            }
-            
-            return  results
-        }
-        
         public func findBy(conds: [String : String?] = [:], limit: Int = 0, offset: Int = 0, orderBy: [String : Bool] = [:]) -> [T] {
             let context = container.viewContext
             var results : [T]
