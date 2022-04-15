@@ -185,7 +185,7 @@ open class CoreDataHelper {
             }.filter({ str in
                 return str.count > 0
             }).joined(separator: " && ")
-            print("predicate_str = \(predicate_str)")
+            // print("predicate_str = \(predicate_str)")
             if predicate_str.count > 0 {
                 request.predicate = NSPredicate(format: predicate_str)
             }
