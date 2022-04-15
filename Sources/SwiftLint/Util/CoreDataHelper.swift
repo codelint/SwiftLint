@@ -222,13 +222,13 @@ open class CoreDataHelper {
                         op = "!="
                     }else if v.starts(with: "~=") {
                         op = " IN "
-                        if let values = [String].fromJSON(with: vv) {
-                            vv = "{\(values.map({ "'\($0)'" }).joined(separator: ","))}"
+                        if let values = [String].fromJSON(with: vv.substr(start: 2)) {
+                            return "\(kv.key) IN {\(values.map({ "'\($0)'" }).joined(separator: ","))}"
                         }else {
-                            vv = "{}"
+                            vv = "\(kv.key) IN {}"
                         }
                     } else if v.starts(with: "!~") {
-                        if let values = [String].fromJSON(with: vv) {
+                        if let values = [String].fromJSON(with: vv.substr(start: 2)) {
                             return values.map({ "\(kv.key)!='\($0)'" }).joined(separator: " && ")
                         }else {
                             return ""
