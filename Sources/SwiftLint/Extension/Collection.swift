@@ -28,17 +28,17 @@ public extension Dictionary{
     
 }
 
-public extension Dictionary where Key: StringProtocol {
-    func keyStringify() -> [String: Value] {
-        var dict: [String: Value] = [:]
-        
-        self.forEach { (key, value) in
-            dict[key.description] = value
-        }
-        
-        return dict
-    }
-}
+//public extension Dictionary where Key: StringProtocol {
+//    func keyStringify() -> [String: Value] {
+//        var dict: [String: Value] = [:]
+//
+//        self.forEach { (key, value) in
+//            dict[key.description] = value
+//        }
+//
+//        return dict
+//    }
+//}
 
 public extension Array where Element: Equatable {
     

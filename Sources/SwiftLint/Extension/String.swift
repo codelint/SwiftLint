@@ -75,6 +75,23 @@ public extension String {
 //    }
     
     
-    
+    func substr(start: Int = 0, length: Int = 0) -> String {
+        var str = self
+        let max = str.count
+        let startIdx = start < 0 ? 0 : start
+        if max == 0 || startIdx > max - 1{
+            return ""
+        }
+        let endIdx = length + start - 1
+        // endIdx = endIdx < max ? endIdx : max - 1
+        let si = str.index(str.startIndex, offsetBy: startIdx)
+        if endIdx > startIdx && endIdx < max {
+            let ei = str.index(str.startIndex, offsetBy: endIdx)
+            str = String(str[si...ei])
+        }else{
+            str = String(str[si...])
+        }
+        return str
+    }
 }
 

@@ -10,6 +10,15 @@ import XCTest
 
 class StringTests: XCTestCase {
     
+    func testSubstr() {
+        XCTAssertEqual("Who", "Who is the boy u love in this world".substr(start: 0, length: 3))
+        XCTAssertEqual("ho", "Who is the boy u love in this world".substr(start: 1, length: 2))
+        XCTAssertEqual("lo", "hello".substr(start: 3, length: 19))
+        XCTAssertEqual("lo", "hello".substr(start: 3))
+        XCTAssertEqual("hello", "hello".substr(start: -1))
+        
+    }
+    
     func testEnds() {
         XCTAssertTrue("hello world!!!".ends(with: "!!!"))
         XCTAssertFalse("hello world!!!".ends(with: "bbd"))

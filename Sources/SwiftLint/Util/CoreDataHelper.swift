@@ -152,14 +152,26 @@ open class CoreDataHelper {
                 }
                 if let v  = kv.value {
                     var op = "=="
+                    var vv = v
                     if v.starts(with: ">") {
                         op = ">"
                     } else if v.starts(with: "<") {
                         op = "<"
-                    }else{
+                    } else if v.starts(with: "!="){
+                        op = "!="
+                    }else if v.starts(with: "~=") {
+                        op = " IN "
+                        if let values = [String].fromJSON(with: vv) {
+                            vv = "{\(values.map({ "'\($0)'" }).joined(separator: ","))}"
+                        }else {
+                            vv = "{}"
+                        }
+                    } else{
                         op = "=="
+                        vv = "==\(v)"
                     }
-                    return "\(kv.key)\(op)'\(kv.value!)'"
+        
+                    return "\(kv.key)\(op)'\(vv.substr(start: op.count))'"
                 }else{
                     return "\(kv.key)==nil"
                 }
