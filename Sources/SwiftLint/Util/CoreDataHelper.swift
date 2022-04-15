@@ -227,6 +227,12 @@ open class CoreDataHelper {
                         }else {
                             vv = "{}"
                         }
+                    } else if v.starts(with: "!~") {
+                        if let values = [String].fromJSON(with: vv) {
+                            return values.map({ "\(kv.key)!='\($0)'" }).joined(separator: " && ")
+                        }else {
+                            return ""
+                        }
                     } else{
                         op = "=="
                         vv = "==\(v)"
