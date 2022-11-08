@@ -19,4 +19,8 @@ public extension Double {
         return (self * divisor).rounded() / divisor
     }
     
+    func toFixed(_ p: Int) -> String {
+        return String(format: "%.\(p)f", self)
+    }
+    
 }
