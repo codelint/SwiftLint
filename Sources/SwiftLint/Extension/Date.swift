@@ -12,6 +12,11 @@ public extension Date {
 //    static let FMT_ISO = "YYYY-MM-dd HH:mm:ss"
 //    static let FMT_ISO_DATE = "YYYY-MM-dd"
     
+    init(int from: any BinaryInteger)
+    {
+        self = Date(timeIntervalSince1970: TimeInterval(from))
+    }
+    
     static func from (_ from: String, format: String? = nil, zone: Locale? = nil) -> Date? {
         let src = from.replace(search: "\\.[0-9]{3,}.*$", with: "").replace(search: "[a-zA-Z]", with: " ")
         var fmt: String? = format
@@ -97,8 +102,8 @@ public extension Date {
     func seconds(to: Date) -> Int {
         return abs(to.int - self.int)
     }
-    
     func days(to: Date) -> Int {
+    
         if let end = Date.from(to.string(format: "YYYY-MM-dd 00:00:00")), let start = Date.from(self.string(format: "YYYY-MM-dd 00:00:00")) {
             return (abs(end.int - start.int))/86400
         }else{
