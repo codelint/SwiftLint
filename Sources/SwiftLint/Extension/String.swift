@@ -6,7 +6,8 @@
 //
 
 import Foundation
-import CommonCrypto
+// import CommonCrypto
+import CryptoKit
 
 public extension String {
     
@@ -69,12 +70,13 @@ public extension String {
     /**
      * generate md5 string
      */
-//    func md5() -> String {
-//        //todo
-//        return self
-//    }
-    
-    
+    func md5() -> String {
+        return Insecure.MD5
+            .hash(data: self.data(using: .utf8)!)
+            .map {String(format: "%02x", $0)}
+            .joined()
+    }
+
     func substr(start: Int = 0, length: Int = 0) -> String {
         var str = self
         let max = str.count
@@ -93,5 +95,45 @@ public extension String {
         }
         return str
     }
+    
+    // url encode / decode
+    func urlEncoded() -> String {
+        var allowedQueryParamAndKey = NSCharacterSet.urlQueryAllowed
+        allowedQueryParamAndKey.remove(charactersIn: "!*'\"();:@&=+$,/?%#[]% ")
+        
+        let encodeUrlString = self.addingPercentEncoding(withAllowedCharacters: allowedQueryParamAndKey)
+        return encodeUrlString ?? ""
+    }
+    
+    func urlDecoded() -> String {
+        return self.removingPercentEncoding ?? ""
+    }
+
+    
+    // unicode
+    func unicodeEncode() -> String {
+        var str: String = ""
+        
+        for scalar in self.unicodeScalars {
+            str += String(format: "\\u%04lX", scalar.value)
+        }
+        
+        return str
+    }
+    
+    func unicodeDecode() -> String {
+        let tempStr1 = self.replacingOccurrences(of: "\\u", with: "\\U")
+        let tempStr2 = tempStr1.replacingOccurrences(of: "\"", with: "\\\"")
+        let tempStr3 = "\"".appending(tempStr2).appending("\"")
+        let tempData = tempStr3.data(using: String.Encoding.utf8)
+        var returnStr: String = ""
+        do {
+            returnStr = try PropertyListSerialization.propertyList(from: tempData!, options: [.mutableContainers], format: nil) as! String
+        } catch {
+            print(error)
+        }
+        return returnStr.replacingOccurrences(of: "\\r\\n", with: "\n")
+    }
+    
 }
 

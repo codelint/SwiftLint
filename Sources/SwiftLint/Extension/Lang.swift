@@ -1,11 +1,19 @@
 //
-//  Double.swift
-//  going
+//  File.swift
+//  
 //
-//  Created by gzhang on 2021/3/26.
+//  Created by gzhang on 2022/11/9.
 //
 
 import Foundation
+
+extension Int {
+    
+    func hexedString() -> String {
+        return NSString(format: "%02x", self) as String
+    }
+    
+}
 
 public extension Double {
     
@@ -22,5 +30,5 @@ public extension Double {
     func toFixed(_ p: Int) -> String {
         return String(format: "%.\(p)f", self)
     }
-    
+
 }
