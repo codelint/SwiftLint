@@ -95,4 +95,66 @@ class CollectionTests: XCTestCase {
         }
     }
     
+    func testDictionaryAsyncEach() {
+        // helper.findBy(request: NSFetchRequest<User>)
+        let arr = ["5", "3", "2", "1"]
+        let dict: [String:Int] = [
+            "5": 1,
+            "3": 2,
+            "1": 234,
+            "2": 3284728
+        ]
+        var firstE: Int = 5
+        var lastE: Int = 3284728
+        
+        dict.asyncEach(arr, next: { item, index, next in
+            // XCTAssertEqual(item, dict[index])
+            next()
+        }, first: { fv, fk, next in
+            firstE = fv
+            next()
+        }) { lv, lk in
+            lastE = lv
+        }
+        XCTAssertEqual(firstE, 1)
+        XCTAssertEqual(lastE, 234)
+        
+        lastE = 0
+        firstE = 0
+        dict.asyncEach(arr, from: 1, next: { item, index, next in
+            XCTAssertTrue(false)
+            next()
+        }, first: { fv,fk, next in
+            firstE = fv
+        }, last: { lv, lk in
+            lastE = lv
+        })
+        XCTAssertEqual(firstE, 2)
+        XCTAssertEqual(lastE, 0)
+    }
+    
+    func testDictionryLoop(){
+        let dict: [String:Int] = [
+            "5": 1,
+            "3": 2,
+            "1": 234,
+            "2": 3284728
+        ]
+        
+        var v1 = 0
+        var v2 = ""
+        var count = 0
+        dict.loop { i, str, next in
+            count += 1
+            v1 += i
+            v2 = "\(v2)\(str)"
+            next?()
+        }
+        XCTAssertEqual(count, 4)
+        XCTAssertEqual(v1, 3284965)
+        // XCTAssertEqual(v2, "5312")
+        
+        
+    }
+    
 }

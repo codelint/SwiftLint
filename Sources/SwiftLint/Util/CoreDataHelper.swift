@@ -76,7 +76,6 @@ open class CoreDataHelper {
         // 1
         let context = persistentContainer.viewContext
         
-        
         // 2
         if context.hasChanges {
             do {
@@ -145,50 +144,41 @@ open class CoreDataHelper {
         public func findBy(conds: [String : String?] = [:], limit: Int = 0, offset: Int = 0, orderBy: [String : Bool] = [:]) -> [T] {
             let context = container.viewContext
             var results : [T]
+            let builder = PredicateBuilder()
             
-            let predicate_str = conds.map { (kv: (key: String, value: String?)) -> String in
+            conds.forEach { (kv: (key: String, value: String?)) -> Void in
                 if kv.key.starts(with: "__") {
-                    return ""
+                    return
                 }
                 if let v  = kv.value {
-                    var op = "=="
-                    var vv = v
+                    // var vv = v
                     if v.starts(with: ">") {
-                        op = ">"
+                        _ = builder.add(kv.key, operation: .GT, value: .init(v))
                     } else if v.starts(with: "<") {
-                        op = "<"
+                        _ = builder.add(kv.key, operation: .LT, value: .init(v))
                     } else if v.starts(with: "!="){
-                        op = "!="
+                        _ = builder.add(kv.key, operation: .NEQ, value: .init(v))
                     }else if v.starts(with: "~=") {
-                        op = " IN "
-                        if let values = [String].fromJSON(with: vv.substr(start: 2)) {
-                            return "\(kv.key) IN {\(values.map({ "'\($0)'" }).joined(separator: ","))}"
+                        if let values = [String].fromJSON(with: v.substr(start: 2)) {
+                            _ = builder.add(kv.key, operation: .IN, value: .init(values.map({ PredicateBuilder.Value($0) })))
                         }else {
-                            vv = "\(kv.key) IN {}"
+                            _ = builder.add(kv.key, operation: .IN, value: .init(vars: []))
                         }
                     } else if v.starts(with: "!~") {
-                        if let values = [String].fromJSON(with: vv.substr(start: 2)) {
-                            return values.map({ "\(kv.key)!='\($0)'" }).joined(separator: " && ")
-                        }else {
-                            return ""
+                        if let values = [String].fromJSON(with: v.substr(start: 2)) {
+                            _ = builder.add(kv.key, operation: .NOTIN, value: .init(values.map({ PredicateBuilder.Value($0) })))
+                            // return values.map({ "\(kv.key)!='\($0)'" }).joined(separator: " && ")
                         }
                     } else{
-                        op = "=="
-                        vv = "==\(v)"
+                        _ = builder.add(kv.key, operation: .EQ, value: .init(v))
                     }
-        
-                    return "\(kv.key)\(op)'\(vv.substr(start: op.count))'"
                 }else{
-                    return "\(kv.key)==nil"
+                    _ = builder.add(kv.key, operation: .NULL, value: .init(true))
                 }
                 
-            }.filter({ str in
-                return str.count > 0
-            }).joined(separator: " && ")
-            // print("predicate_str = \(predicate_str)")
-            if predicate_str.count > 0 {
-                request.predicate = NSPredicate(format: predicate_str)
             }
+            
+            request.predicate = builder.predicate()
             
             if limit > 0 {
                 request.fetchLimit = limit

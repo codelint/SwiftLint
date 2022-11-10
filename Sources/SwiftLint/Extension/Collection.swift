@@ -26,6 +26,51 @@ public extension Dictionary{
         return self.filter { (key, value) in !keys.contains(where: { $0 == key }) }
     }
     
+    func asyncEach(
+        _ keys: [Key],
+        from: Int = 0,
+        next: @escaping ((Value, Key, @escaping () -> Void) -> Void),
+        first: ((Value, Key, @escaping () -> Void) -> Void)? = nil,
+        last: ( (Value, Key) -> Void)? = nil
+    ) {
+        if from < keys.count {
+            let f = first == nil ? { _, _ , next in
+                next()
+            } : first!
+            
+            let key = keys[from]
+            let element = self[key]!
+            f(element, key) {
+                let nextIdx = from + 1
+                next(element, keys[from]) {
+                    if nextIdx < keys.count {
+                        self.asyncEach(keys, from: nextIdx, next: next, last: last)
+                    }else {
+                        last?(element, key)
+                    }
+                }
+            }
+        }
+    }
+    
+    func loop( _ next: @escaping (Value, Key, (() -> Void)?) -> Void) {
+        var keys: [Key] = []
+        self.keys.forEach { k in
+            keys.append(k)
+        }
+        
+        self.asyncEach(keys, next: next)
+    }
+    
+}
+
+public extension Dictionary where Key:Comparable{
+    func loop( _ next: @escaping (Value, Key, (() -> Void)?) -> Void) {
+
+        let keys = self.keys.sorted()
+        
+        self.asyncEach(keys, next: next)
+    }
 }
 
 //public extension Dictionary where Key: StringProtocol {
@@ -89,6 +134,12 @@ public extension Array {
         
     }
     
+    func loop(_ next: @escaping ((Element, @escaping () -> Void) -> Void)) {
+        self.asyncEach(self, next: { element, idx, pass in
+            next(element, pass)
+        })
+    }
+    
     func asyncEach(
         _ arr: [Element],
         from: Int = 0,
@@ -108,9 +159,7 @@ public extension Array {
                         // print("\(nextIdx) < \(arr.count)")
                         self.asyncEach(self, from: nextIdx, next: next, last: last)
                     }else {
-                        if let l = last {
-                            l(arr[from])
-                        }
+                        last?(arr[from])
                     }
                 }
                 

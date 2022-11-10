@@ -16,6 +16,7 @@ open class CommonUtil {
 }
 
 extension CommonUtil {
+    
     public func wait(for sec: Int, callback: @escaping () -> Void){
         self.wait(for: Double(sec), callback)
     }
@@ -29,6 +30,17 @@ extension CommonUtil {
             callback()
         }
     }
+    
+    func tap<T: Any>(_ target:T, _ next: @escaping (T) -> T) -> T {
+        return next(target)
+        
+    }
+    
+    func tap<T: AnyObject>(obj target:T, _ next: @escaping (T) -> Void) -> T {
+        next(target)
+        return target
+    }
+    
 }
 
 /**

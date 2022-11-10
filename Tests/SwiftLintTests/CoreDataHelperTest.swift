@@ -37,6 +37,7 @@ class CoreDataHelperTests: XCTestCase {
     
     func testFindBy() {
         // helper.findBy(request: NSFetchRequest<User>)
+        
         XCTAssertEqual(SwiftLint().text, "Hello, World!")
     }
     

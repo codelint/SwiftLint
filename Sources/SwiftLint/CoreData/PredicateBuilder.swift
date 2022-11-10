@@ -61,6 +61,12 @@ class PredicateBuilder {
             self.int = int
         }
         
+        init(vars: [Value])
+        {
+            self.type = .vars
+            self.vars = vars
+        }
+        
         init(_ vars: [Value])
         {
             self.type = .vars
@@ -107,6 +113,7 @@ class PredicateBuilder {
         case IN, NULL, BETWEEN
         case NOTIN = "NOT IN"
         case NOTBETWEEN = "NOT BETWEEN"
+        case NEQ = "!="
         case EQ = "=="
         case LE = "<"
         case LT = "<="
@@ -173,7 +180,7 @@ class PredicateBuilder {
     {
         let predicate_str = self.wheres.map { (kov: (field: String, op: Operation, value: Value)) -> String in
             switch kov.op {
-            case .EQ, .LE, .GE, .GT, .LT:
+            case .EQ, .LE, .GE, .GT, .LT, .NEQ:
                 return "\(kov.field) \(kov.op.rawValue) \(kov.value.description)"
             case .IN:
                 return "\(kov.field) IN {\(kov.value.vars.map({$0.description}).joined(separator: ","))}"
