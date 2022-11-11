@@ -7,6 +7,22 @@
 
 import Foundation
 
+extension Optional {
+    
+    func with(_ transform: @escaping (Wrapped) -> Void) {
+        if let wrapped = self {
+            transform(wrapped)
+        }
+    }
+    
+    func tap(_ transform: @escaping (Wrapped) -> Wrapped?) -> Self {
+        if let wrapped = self {
+            return transform(wrapped)
+        }
+        return nil
+    }
+}
+
 extension Int {
     
     func hexedString() -> String {

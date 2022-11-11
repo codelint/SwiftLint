@@ -85,6 +85,22 @@ public extension Dictionary where Key:Comparable{
 //    }
 //}
 
+//public extension Optional {
+//    func let(){
+//        
+//    }
+//}
+
+public extension Set {
+    var array: [Element] {
+        var elements: [Element] = []
+        self.forEach { e in
+            elements.append(e)
+        }
+        return elements
+    }
+}
+
 public extension Array where Element: Equatable {
     
     func contains(elements: [Element]) -> Bool{
@@ -96,13 +112,22 @@ public extension Array where Element: Equatable {
     }
     
     func except(e: Element) -> Self {
-        return self.filter({ $0 != e })
+        return except(elements: [e])
     }
     
     func only(e: Element) -> Self {
-        return self.filter({ $0 == e })
+        return self.only(elements: [e])
     }
     
+    func except(elements: [Element]) -> Self
+    {
+        return self.filter({ !elements.contains($0) })
+    }
+    
+    func only(elements: [Element]) -> Self
+    {
+        return self.filter({ elements.contains($0) })
+    }
 }
 
 public extension Array {

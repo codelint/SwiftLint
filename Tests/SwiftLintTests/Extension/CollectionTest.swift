@@ -44,6 +44,21 @@ class CollectionTests: XCTestCase {
         XCTAssertNil(actual["d"])
     }
     
+    func testArrayExceptOnly() {
+        let dict = ["a", "b", "c", "d"]
+        
+        let actual = dict.except(elements: ["a", "b"])
+        
+        XCTAssertEqual(actual.count, 2)
+        XCTAssertEqual(actual.joined(separator: ""), "cd")
+        
+        let only = dict.only(elements: ["a", "b"])
+        
+        XCTAssertEqual(only.count, 2)
+        XCTAssertEqual(only.joined(separator: ""), "ab")
+     
+    }
+    
     func testArrayAsyncEach() {
         // helper.findBy(request: NSFetchRequest<User>)
         let arr = [5, 2, 0, 1, 3, 1, 4]

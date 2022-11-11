@@ -5,6 +5,7 @@
 //  Created by gzhang on 2022/3/23.
 //
 
+import Foundation
 import XCTest
 import CoreData
 @testable import SwiftLint
