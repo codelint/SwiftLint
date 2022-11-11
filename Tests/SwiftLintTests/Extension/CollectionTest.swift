@@ -91,6 +91,12 @@ class CollectionTests: XCTestCase {
         XCTAssertEqual(lastE, 0)
     }
     
+    func testArrayMaxMin() {
+        let arr = [5, 2, 0, -3, 1, 3, 1, 4]
+        XCTAssertEqual(arr.max(), 5)
+        XCTAssertEqual(arr.min(), -3)
+    }
+    
     func testGroupBy() {
         let arr = [5, 2, 0, 1, 3, 1, 4]
         
@@ -102,8 +108,10 @@ class CollectionTests: XCTestCase {
             switch(k){
             case "0":
                 XCTAssertEqual(v.count, 3)
+                XCTAssertEqual(v.sum(), 6)
             case "1":
                 XCTAssertEqual(v.count, 4)
+                XCTAssertEqual(v.sum(), 10)
             default:
                 XCTAssertTrue(false)
             }
@@ -168,8 +176,6 @@ class CollectionTests: XCTestCase {
         XCTAssertEqual(count, 4)
         XCTAssertEqual(v1, 3284965)
         // XCTAssertEqual(v2, "5312")
-        
-        
     }
     
 }

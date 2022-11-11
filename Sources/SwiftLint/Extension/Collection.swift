@@ -132,8 +132,8 @@ public extension Array where Element: Equatable {
 
 public extension Array {
     
-    func groupBy(key: (Element) -> String?) -> [String: [Element]]{
-        var results = [String: [Element]]()
+    func groupBy<Key: Hashable>(key: (Element) -> Key?) -> [Key: [Element]]{
+        var results = [Key: [Element]]()
         for element in self {
             // print("beep[\(beep.name)] at \(Date(timeIntervalSince1970: Double(beep.end_time)).datetimeString)")
             if let label = key(element) {
@@ -188,6 +188,40 @@ public extension Array {
                     }
                 }
                 
+            }
+        }
+    }
+    
+}
+
+public extension Array where Element: Numeric {
+ 
+    func sum() -> Element {
+        return self.reduce(.zero) { memo, num in
+            return memo + num
+        }
+    }
+    
+}
+
+public extension Array where Element: Comparable {
+    
+    func max() -> Element? {
+        return self.reduce(nil) { memo, num in
+            if let memo = memo {
+                return memo < num ? num : memo
+            }else {
+                return num
+            }
+        }
+    }
+    
+    func min() -> Element? {
+        return self.reduce(nil) { memo, num in
+            if let memo = memo {
+                return memo < num ? memo : num
+            }else {
+                return num
             }
         }
     }
