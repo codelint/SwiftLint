@@ -91,12 +91,6 @@ class CollectionTests: XCTestCase {
         XCTAssertEqual(lastE, 0)
     }
     
-    func testArrayMaxMin() {
-        let arr = [5, 2, 0, -3, 1, 3, 1, 4]
-        XCTAssertEqual(arr.max(), 5)
-        XCTAssertEqual(arr.min(), -3)
-    }
-    
     func testGroupBy() {
         let arr = [5, 2, 0, 1, 3, 1, 4]
         

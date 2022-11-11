@@ -203,27 +203,3 @@ public extension Array where Element: Numeric {
     }
     
 }
-
-public extension Array where Element: Comparable {
-    
-    func max() -> Element? {
-        return self.reduce(nil) { memo, num in
-            if let memo = memo {
-                return memo < num ? num : memo
-            }else {
-                return num
-            }
-        }
-    }
-    
-    func min() -> Element? {
-        return self.reduce(nil) { memo, num in
-            if let memo = memo {
-                return memo < num ? memo : num
-            }else {
-                return num
-            }
-        }
-    }
-    
-}
