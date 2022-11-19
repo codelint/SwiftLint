@@ -60,12 +60,11 @@ class CollectionTests: XCTestCase {
     }
     
     func testArrayAsyncEach() {
-        // helper.findBy(request: NSFetchRequest<User>)
         let arr = [5, 2, 0, 1, 3, 1, 4]
         var firstE = 0
         var lastE = 0
         
-        arr.asyncEach(arr, next: { item, index, next in
+        arr.asyncEach(next: { item, index, next in
             XCTAssertEqual(item, arr[index])
             next()
         }, first: { first, next in
@@ -79,7 +78,7 @@ class CollectionTests: XCTestCase {
         
         lastE = 0
         firstE = 0
-        arr.asyncEach(arr, from: 1, next: { item, index, next in
+        arr.asyncEach(from: 1, next: { item, index, next in
             XCTAssertTrue(false)
             next()
         }, first: { first, next in

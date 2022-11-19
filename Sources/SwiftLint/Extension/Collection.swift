@@ -166,6 +166,32 @@ public extension Array {
     }
     
     func asyncEach(
+        from: Int = 0,
+        next: @escaping ((Element, Int, @escaping () -> Void) -> Void),
+        first: ((Element, @escaping () -> Void) -> Void)? = nil,
+        last: ( (Element) -> Void)? = nil
+    ) {
+        if from < self.count {
+            let f = first == nil ? { _, next in
+                next()
+            } : first!
+            
+            f(self[from]) {
+                let nextIdx = from + 1
+                next(self[from], from) {
+                    if nextIdx < self.count {
+                        // print("\(nextIdx) < \(arr.count)")
+                        self.asyncEach(self, from: nextIdx, next: next, last: last)
+                    }else {
+                        last?(self[from])
+                    }
+                }
+                
+            }
+        }
+    }
+    
+    func asyncEach(
         _ arr: [Element],
         from: Int = 0,
         next: @escaping ((Element, Int, @escaping () -> Void) -> Void),
