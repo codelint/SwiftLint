@@ -94,9 +94,9 @@ public class PredicateBuilder {
         var description: String {
             switch self.type {
             case .int:
-                return self.int == nil ? "" : "\(self.int!)"
+                return self.int == nil ? "nil" : "\(self.int!)"
             case .number:
-                return self.number == nil ? "" : "\(self.number!)"
+                return self.number == nil ? "nil" : "\(self.number!)"
             case .string:
                 return "'\(self.str ?? "")'"
             case .bool :
@@ -127,6 +127,14 @@ public class PredicateBuilder {
     
     public init(){
         self.wheres = []
+    }
+    
+    public func add(is field: String) -> PredicateBuilder {
+        self.add(field, value: .init(true))
+    }
+    
+    public func add(not field: String) -> PredicateBuilder {
+        self.add(field, value: .init(false))
     }
     
     public func add(_ field: String, operation: Operation, value: Value) -> PredicateBuilder
