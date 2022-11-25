@@ -99,7 +99,9 @@ public class PredicateBuilder {
                 return self.number == nil ? "" : "\(self.number!)"
             case .string:
                 return "'\(self.str ?? "")'"
-            case .map, .numbers, .bool, .vars:
+            case .bool :
+                return self.bool == nil ? "nil" : (self.bool! ? "YES" : "NO")
+            case .map, .numbers, .vars:
                 return ""
             }
         }
