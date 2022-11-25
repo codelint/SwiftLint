@@ -19,73 +19,73 @@ public class PredicateBuilder {
         var map: [String: Value] = [:]
         var bool: Bool? = nil
         
-        init(_ string: String?)
+        public init(_ string: String?)
         {
             self.type = .string
             self.str = string
         }
         
-        init(_ numbers: [any Numeric])
+        public init(_ numbers: [any Numeric])
         {
             self.type = .numbers
             self.numbers = numbers
         }
         
-        init(_ int: Int64)
+        public init(_ int: Int64)
         {
             self.type = .int
             self.int = Int(int)
         }
         
-        init(_ int: Int32)
+        public init(_ int: Int32)
         {
             self.type = .int
             self.int = Int(int)
         }
         
-        init(_ int: Int16)
+        public init(_ int: Int16)
         {
             self.type = .int
             self.int = Int(int)
         }
         
-        init(_ uuid: UUID?)
+        public init(_ uuid: UUID?)
         {
             self.type = .string
             self.str = uuid?.description
         }
         
-        init(_ int: Int?)
+        public init(_ int: Int?)
         {
             self.type = .int
             self.int = int
         }
         
-        init(vars: [Value])
+        public init(vars: [Value])
         {
             self.type = .vars
             self.vars = vars
         }
         
-        init(_ vars: [Value])
+        public init(_ vars: [Value])
         {
             self.type = .vars
             self.vars = vars
         }
         
-        init(_ map: [String: Value])
+        public init(_ map: [String: Value])
         {
             self.type = .map
             self.map = map
         }
         
-        init (number: (any Numeric)?)
+        public init (number: (any Numeric)?)
         {
             self.type = .number
             self.number = number
         }
         
-        init (_ bool: Bool)
+        public init (_ bool: Bool)
         {
             self.type = .bool
             self.bool = bool
