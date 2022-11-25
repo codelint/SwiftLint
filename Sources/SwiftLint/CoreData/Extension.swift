@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-extension NSManagedObjectContext {
+public extension NSManagedObjectContext {
     
     func exec(_ next: @escaping (NSManagedObjectContext) throws -> Void) -> Bool
     {
@@ -27,9 +27,9 @@ extension NSManagedObjectContext {
     }
 }
 
-extension NSPredicate {
+public extension NSPredicate {
 
-    public convenience init(from: [String: String?]) {
+    convenience init(from: [String: String?]) {
         
         let predicate_str = from.map { (kv: (key: String, value: String?)) -> String in
             if kv.key.starts(with: "__") {

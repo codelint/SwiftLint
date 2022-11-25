@@ -7,9 +7,9 @@
 
 import Foundation
 
-class PredicateBuilder {
+public class PredicateBuilder {
     
-    struct Value {
+    public struct Value {
         var type: ValueType
         var str: String? = nil
         var int: Int? = nil
@@ -105,11 +105,11 @@ class PredicateBuilder {
         }
     }
     
-    enum ValueType: String {
+    public enum ValueType: String {
         case int, string, vars, map, number, numbers, bool
     }
     
-    enum Operation: String {
+    public enum Operation: String {
         case IN, NULL, BETWEEN
         case NOTIN = "NOT IN"
         case NOTBETWEEN = "NOT BETWEEN"
@@ -123,7 +123,7 @@ class PredicateBuilder {
 
     var wheres: [(String, Operation, Value)]
     
-    init(){
+    public init(){
         self.wheres = []
     }
     
