@@ -207,7 +207,7 @@ public class PredicateBuilder {
             return str.count > 0
         }).joined(separator: " && ")
         
-        print(predicate_str)
+        // print(predicate_str)
         return NSPredicate(format: predicate_str)
     }
 }
