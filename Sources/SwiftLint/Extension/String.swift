@@ -87,7 +87,7 @@ public extension String {
         let endIdx = length + start - 1
         // endIdx = endIdx < max ? endIdx : max - 1
         let si = str.index(str.startIndex, offsetBy: startIdx)
-        if endIdx > startIdx && endIdx < max {
+        if endIdx >= startIdx && endIdx < max {
             let ei = str.index(str.startIndex, offsetBy: endIdx)
             str = String(str[si...ei])
         }else{
