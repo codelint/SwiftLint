@@ -195,7 +195,7 @@ public class PredicateBuilder {
             case .IN:
                 return "\(kov.field) IN {\(kov.value.vars.map({$0.description}).joined(separator: ","))}"
             case .NULL:
-                return "(\(kov.field)\(kov.value.bool ?? true ? "==" : "!=")nil"
+                return "\(kov.field)\(kov.value.bool ?? true ? " == " : " != ")nil"
             case .NOTIN:
                 return "\(kov.field) NOT IN \(kov.value.numbers[0]),\(kov.value.numbers[1])"
             case .NOTBETWEEN:
