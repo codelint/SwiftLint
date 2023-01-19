@@ -129,47 +129,47 @@ public class PredicateBuilder {
         self.wheres = []
     }
     
-    public func add(is field: String) -> PredicateBuilder {
+    public func add(is field: String) -> Self {
         self.add(field, value: .init(true))
     }
     
-    public func add(not field: String) -> PredicateBuilder {
+    public func add(not field: String) -> Self {
         self.add(field, value: .init(false))
     }
     
-    public func add(_ field: String, operation: Operation, value: Value) -> PredicateBuilder
+    public func add(_ field: String, operation: Operation, value: Value) -> Self
     {
         self.wheres.append((field, operation, value))
         return self
     }
     
-    public func add(_ field: String, a: any Numeric, b: any Numeric) -> PredicateBuilder
+    public func add(_ field: String, a: any Numeric, b: any Numeric) -> Self
     {
         self.wheres.append((field, .BETWEEN, Value([a,b])))
         return self
     }
     
-    public func add(_ field: String, operation: Operation, value: String?)  -> PredicateBuilder
+    public func add(_ field: String, operation: Operation, value: String?)  -> Self
     {
         return self.add(field, operation: operation, value: Value(value))
     }
     
-    public func add(_ field: String, value: Value) -> PredicateBuilder
+    public func add(_ field: String, value: Value) -> Self
     {
         return self.add(field, operation: .EQ, value: value)
     }
     
-    public func add(_ field: String, _ value: String?) -> PredicateBuilder
+    public func add(_ field: String, _ value: String?) -> Self
     {
         return self.add(field, value: .init(value))
     }
     
-    public func add(_ field: String, _ value: UUID?) -> PredicateBuilder
+    public func add(_ field: String, _ value: UUID?) -> Self
     {
         return self.add(field, value: .init(value))
     }
     
-    public func add(_ wheres: [String: String?]) -> PredicateBuilder
+    public func add(_ wheres: [String: String?]) -> Self
     {
         for (k, v) in wheres {
             _ = self.add(k, operation: .EQ, value: Value(v))
@@ -177,13 +177,43 @@ public class PredicateBuilder {
         return self
     }
     
-    public func add(_ wheres: [String: Value]) -> PredicateBuilder
+    public func add(_ wheres: [String: Value]) -> Self
     {
         for (k, v) in wheres {
             _ = self.add(k, operation: .EQ, value: v)
         }
         
         return self
+    }
+    
+    public func whereNull(_ field: String) -> Self
+    {
+        return self.add(field, operation: .NULL, value: .init(true))
+    }
+    
+    public func whereNotNull(_ field: String) -> Self
+    {
+        return self.add(field, operation: .NULL, value: .init(false))
+    }
+    
+    public func whereIn(_ field: String, vars: [Value]) -> Self
+    {
+        return self.add(field, operation: .IN, value: .init(vars: vars))
+    }
+    
+    public func whereNotIn(_ field: String, vars: [Value]) -> Self
+    {
+        return self.add(field, operation: .NOTIN, value: .init(vars: vars))
+    }
+    
+    public func whereBetween<Number: Numeric>(_ field: String, a: Number, b: Number) -> Self
+    {
+        return self.add(field, operation: .BETWEEN, value: .init(vars: [.init(number: a), .init(number: b)]))
+    }
+    
+    public func whereNotBetween<Number: Numeric>(_ field: String, a: Number, b: Number) -> Self
+    {
+        return self.add(field, operation: .NOTBETWEEN, value: .init(vars: [.init(number: a), .init(number: b)]))
     }
     
     public func predicate() -> NSPredicate?
