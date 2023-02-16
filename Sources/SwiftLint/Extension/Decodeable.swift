@@ -9,9 +9,9 @@ import Foundation
 
 public extension Decodable{
     
-    static func fromJSON(with str: String) -> Self? {
+    static func fromJSON(with str: String, using: String.Encoding = .utf8) -> Self? {
         
-        if let data = str.data(using: .utf8) {
+        if let data = str.data(using: using) {
             if let decoded = try? JSONDecoder().decode(self.self, from: data) {
                 return decoded
             }
