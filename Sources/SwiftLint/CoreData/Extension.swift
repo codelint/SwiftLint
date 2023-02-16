@@ -25,6 +25,11 @@ public extension NSManagedObjectContext {
     {
         return self.exec({ try $0.save() })
     }
+    
+    func merge() -> Bool
+    {
+        self.exec({ try $0.save() })
+    }
 }
 
 public extension NSPredicate {
