@@ -18,4 +18,14 @@ public extension Decodable{
         }
         return nil
     }
+    
+    static func fromJSON(with data: Data?) -> Self? {
+        
+        if let data = data {
+            if let decoded = try? JSONDecoder().decode(self.self, from: data) {
+                return decoded
+            }
+        }
+        return nil
+    }
 }
