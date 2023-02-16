@@ -28,11 +28,5 @@ public extension Color {
         return Color(red: .randomColorRGB(), green: .randomColorRGB(), blue: .randomColorRGB())
     }
     
-    static let lightgray = Color(hex: 0xf1f1f1)
-    static let lightorange = Color(hex: 0xfed8b1)
-    static let lightred = Color(hex: 0xff6961)
-    static let lightblue = Color(hex: 0x6495ec)
-    static let thinblue = Color(hex: 0xd3def5)
-    
     
 }
