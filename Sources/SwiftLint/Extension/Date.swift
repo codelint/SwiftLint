@@ -44,22 +44,6 @@ public extension Date {
         
     }
     
-    var datetimeString: String {
-        return self.string(format: "YYYY-MM-dd HH:mm:ss")
-    }
-    
-    var dateString: String {
-        return self.string(format: "YYYY-MM-dd")
-    }
-    
-    var iso8601: String {
-        return self.string(format: "YYYY-MM-dd HH:mm:ss")
-    }
-    
-    var isoDate: String {
-        return self.string(format: "YYYY-MM-dd")
-    }
-    
     var int64: Int64 {
         Int64(self.timeIntervalSince1970)
     }
@@ -80,16 +64,17 @@ public extension Date {
         return Int(self.string(format: "YYYY"))!
     }
     
-    func string(format: String = "YYYY-MM-dd HH:mm:ss", zone: Locale? = nil) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = DateFormatter.Style.medium
-        formatter.timeStyle = DateFormatter.Style.short
-        formatter.dateFormat = format
-        if let z = zone {
-            formatter.locale = z
-        }
-        return formatter.string(from: self)
-    }
+    var monthInt: Int { Int(self.string(format: "MM"))! }
+    
+    var yearInt: Int { Int(self.string(format: "YYYY"))! }
+    
+    var dayInt: Int { Int(self.string(format: "dd"))! }
+    
+    var hourInt: Int { Int(self.string(format: "HH")) ?? 0 }
+    
+    var minuteInt: Int { Int(self.string(format: "mm")) ?? 0 }
+    
+    var secondInt: Int { Int(self.string(format: "ss")) ?? 0 }
     
     func hours(to: Date) -> Int {
         return abs(to.int - self.int)/3600
@@ -102,6 +87,7 @@ public extension Date {
     func seconds(to: Date) -> Int {
         return abs(to.int - self.int)
     }
+    
     func days(to: Date) -> Int {
     
         if let end = Date.from(to.string(format: "YYYY-MM-dd 00:00:00")), let start = Date.from(self.string(format: "YYYY-MM-dd 00:00:00")) {
@@ -111,4 +97,76 @@ public extension Date {
         }
         // return (abs(Date.from(to.string(format: "YYYY-MM-dd 00:00:00")).int - Date.from(self.string(format: "YYYY-MM-dd 00:00:00")).int))/86400
     }
+    
+}
+
+/**
+ * Date strings
+ */
+extension Date {
+    
+    func string(format: String = "YYYY-MM-dd HH:mm:ss", zone: Locale? = nil) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = DateFormatter.Style.medium
+        formatter.timeStyle = DateFormatter.Style.short
+        formatter.dateFormat = format
+        if let z = zone {
+            formatter.locale = z
+        }
+        return formatter.string(from: self)
+    }
+    
+    var datetimeString: String {
+        return self.string(format: "YYYY-MM-dd HH:mm:ss")
+    }
+    
+    var dateString: String {
+        return self.string(format: "YYYY-MM-dd")
+    }
+    
+    var iso8601: String {
+        return self.string(format: "YYYY-MM-dd HH:mm:ss")
+    }
+    
+    var isoDate: String {
+        return self.string(format: "YYYY-MM-dd")
+    }
+    
+}
+
+extension Date {
+    
+    var YMd: Date { today() ?? self }
+    
+    func today(time: String = "00:00:00") -> Date? { Date.from(self.string(format: "YYYY-MM-dd \(time)")) }
+}
+
+/**
+ * Chinese calenar date
+ *
+ * -639129600 : 1949-10-01 00:00:00 时间戳
+ * 3081600 : 1970年春节0时（中国时间)
+ */
+extension Date {
+    static let TIMESTAMP_SPRINT_FESTIVAL_1970: Int = 3081600
+    static let MOON_DAYS: CGFloat = 29.530588
+    
+    var lunarDayInt: Int {
+        let past = (CGFloat(self.int - Self.TIMESTAMP_SPRINT_FESTIVAL_1970)/86400)/Self.MOON_DAYS
+        return Int((past - CGFloat(Int(past)))*Self.MOON_DAYS + 1)
+    }
+    
+    var moon_date: Date { Date(int: self.int - (self.lunarDayInt-1)*86400).YMd }
+    
+    // Celestial Stem & Terrestrial Stem
+    var ctDayInt: Int { ((self.int + 639129600)/86400)%60 }
+    
+    // not right anytime
+    var ctYearInt: Int { (self.yearInt - 1864)%60 }
+    
+    func lunarMonths(since: Date) -> Int {
+        (((self.moon_date.int - since.moon_date.int + 86400).cgfloat/86400)/Self.MOON_DAYS).int
+    }
+    
+    
 }

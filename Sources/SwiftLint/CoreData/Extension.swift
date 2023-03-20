@@ -26,9 +26,9 @@ public extension NSManagedObjectContext {
         return self.exec({ try $0.save() })
     }
     
-    func merge() -> Bool
+    func merge() -> Void
     {
-        self.exec({ try $0.save() })
+        _ = self.exec({ try $0.save() })
     }
 }
 

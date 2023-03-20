@@ -23,15 +23,33 @@ extension Optional {
     }
 }
 
+extension CGFloat {
+    var int: Int { Int(self) }
+}
+
 extension Int {
+    
+    var cgfloat: CGFloat { CGFloat(self) }
     
     func hexedString() -> String {
         return NSString(format: "%02x", self) as String
     }
     
+    func lpad(_ length: Int, char: String = "0") -> String {
+        var a = log10(self.cgfloat).int + 1
+        var result = self.description
+        while a < length && length > 1 {
+            result = "\(char)\(result)"
+            a = a + 1
+        }
+        return result
+    }
+    
 }
 
 public extension Double {
+    
+    var int: Int { Int(self) }
     
     static func randomColorRGB() -> Double {
         return Double(arc4random()) / Double(UInt32.max)

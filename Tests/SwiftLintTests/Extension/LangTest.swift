@@ -29,6 +29,13 @@ final class LangTest: XCTestCase {
         }
         
     }
+    
+    func testIntLPad() throws {
+        XCTAssertEqual(2.lpad(2), "02")
+        XCTAssertEqual(3.lpad(2), "03")
+        XCTAssertEqual(3.lpad(3), "003")
+        XCTAssertEqual(315.lpad(10), "0000000315")
+    }
 
 //    func testPerformanceExample() throws {
 //

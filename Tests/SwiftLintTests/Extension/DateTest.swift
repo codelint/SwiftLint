@@ -42,4 +42,14 @@ class DateTests: XCTestCase {
         
     }
     
+    func testLunar() {
+        if let spring = Date.from("2023-01-22 00:00:00") {
+            XCTAssertEqual(1, spring.lunarDayInt)
+            XCTAssertEqual(spring, spring.moon_date)
+            XCTAssertEqual(Date(int: 1679124777).lunarDayInt, 27)
+             // XCTAssertEqual((Date(int: 1679124777).moon_date.int - spring.moon_date.int)/86400, 30)
+            XCTAssertEqual(Date(int: 1679124777).lunarMonths(since: spring), 1)
+        }
+    }
+    
 }
