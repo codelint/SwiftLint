@@ -103,7 +103,7 @@ public extension Date {
 /**
  * Date strings
  */
-extension Date {
+public extension Date {
     
     func string(format: String = "YYYY-MM-dd HH:mm:ss", zone: Locale? = nil) -> String {
         let formatter = DateFormatter()
@@ -134,7 +134,7 @@ extension Date {
     
 }
 
-extension Date {
+public extension Date {
     
     var YMd: Date { today() ?? self }
     
@@ -147,7 +147,7 @@ extension Date {
  * -639129600 : 1949-10-01 00:00:00 时间戳
  * 3081600 : 1970年春节0时（中国时间)
  */
-extension Date {
+public extension Date {
     static let TIMESTAMP_SPRINT_FESTIVAL_1970: Int = 3081600
     static let MOON_DAYS: CGFloat = 29.530588
     
