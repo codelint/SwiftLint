@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Optional {
+public extension Optional {
     
     func with(_ transform: @escaping (Wrapped) -> Void) {
         if let wrapped = self {
@@ -23,11 +23,11 @@ extension Optional {
     }
 }
 
-extension CGFloat {
+public extension CGFloat {
     var int: Int { Int(self) }
 }
 
-extension Int {
+public extension Int {
     
     var cgfloat: CGFloat { CGFloat(self) }
     
