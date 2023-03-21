@@ -34,6 +34,14 @@ public extension Int {
     
     var cgfloat: CGFloat { CGFloat(self) }
     
+    var double: Double { Double(self) }
+    
+    var int64: Int64 { Int64(self) }
+    
+    var int32: Int32 { Int32(self) }
+    
+    var date: Date{ Date(int: self) }
+    
     func hexedString() -> String {
         return NSString(format: "%02x", self) as String
     }

@@ -44,17 +44,11 @@ public extension Date {
         
     }
     
-    var int64: Int64 {
-        Int64(self.timeIntervalSince1970)
-    }
+    var int64: Int64 { Int64(self.timeIntervalSince1970) }
     
-    var int32: Int32 {
-        Int32(self.timeIntervalSince1970)
-    }
+    var int32: Int32 { Int32(self.timeIntervalSince1970) }
     
-    var int: Int {
-        Int(self.timeIntervalSince1970)
-    }
+    var int: Int { Int(self.timeIntervalSince1970) }
     
     var month: Int {
         return Int(self.string(format: "MM"))!
