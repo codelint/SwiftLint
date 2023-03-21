@@ -21,6 +21,9 @@ public extension Optional {
         }
         return nil
     }
+    
+    var isNil: Bool {  self == nil }
+    var isNotNil: Bool { !isNil }
 }
 
 public extension CGFloat {
