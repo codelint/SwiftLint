@@ -42,6 +42,10 @@ class DateTests: XCTestCase {
         
     }
     
+//    func test24Hours() {
+//        XCTAssertEqual("", Date().string("))
+//    }
+    
     func testLunar() {
         if let spring = Date.from("2023-01-22 00:00:00") {
             XCTAssertEqual(1, spring.lunarDayInt)
@@ -50,6 +54,12 @@ class DateTests: XCTestCase {
              // XCTAssertEqual((Date(int: 1679124777).moon_date.int - spring.moon_date.int)/86400, 30)
             XCTAssertEqual(Date(int: 1679124777).lunarMonths(since: spring), 1)
         }
+    }
+    
+    func testToday() {
+        let date = Date(int: 86400*13 + 1800)
+        
+        XCTAssertEqual(date.todayAt(86400+3600), Date(int: date.int + 1800))
     }
     
 }

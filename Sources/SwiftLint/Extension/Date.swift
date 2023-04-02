@@ -34,6 +34,8 @@ public extension Date {
             let formatter = DateFormatter()
             if let z = zone {
                 formatter.locale = z
+            }else{
+                formatter.locale = .init(identifier: "en_US_POSIX")
             }
             formatter.dateFormat = f
             let date = formatter.date(from: src)
@@ -103,9 +105,13 @@ public extension Date {
         let formatter = DateFormatter()
         formatter.dateStyle = DateFormatter.Style.medium
         formatter.timeStyle = DateFormatter.Style.short
+        // formatter.
         formatter.dateFormat = format
+        // formatter.locale = Loca
         if let z = zone {
             formatter.locale = z
+        }else{
+            formatter.locale = .init(identifier: "en_US_POSIX")
         }
         return formatter.string(from: self)
     }
@@ -133,6 +139,10 @@ public extension Date {
     var YMd: Date { today() ?? self }
     
     func today(time: String = "00:00:00") -> Date? { Date.from(self.string(format: "YYYY-MM-dd \(time)")) }
+    
+    func todayAt(_ seconds: Int = 0 ) -> Date {
+        Date.from(self.string(format: "YYYY-MM-dd \((seconds%86400).date.string(format: "HH:mm:ss"))"))!
+    }
 }
 
 /**
