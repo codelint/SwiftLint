@@ -140,9 +140,7 @@ public extension Date {
     
     func today(time: String = "00:00:00") -> Date? { Date.from(self.string(format: "YYYY-MM-dd \(time)")) }
     
-    func todayAt(_ seconds: Int = 0 ) -> Date {
-        Date.from(self.string(format: "YYYY-MM-dd \((seconds%86400).date.string(format: "HH:mm:ss"))"))!
-    }
+    func todayAt(_ seconds: Int = 0 ) -> Date { Date(int: Date.from(self.string(format: "YYYY-MM-dd 00:00:00"))!.int + seconds) }
 }
 
 /**
