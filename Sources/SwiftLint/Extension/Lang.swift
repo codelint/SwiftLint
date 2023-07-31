@@ -47,13 +47,13 @@ public extension Int {
     }
     
     func lpad(_ length: Int, char: String = "0") -> String {
-        var a = self == 0 ? 1 : log10(self.cgfloat).int + 1
-        var result = self.description
+        var a = self == 0 ? 1 : log10(abs(self.cgfloat)).int + 1
+        var result = abs(self).description
         while a < length && length > 1 {
             result = "\(char)\(result)"
             a = a + 1
         }
-        return result
+        return self < 0 ? "-\(result)" : result
     }
     
 }

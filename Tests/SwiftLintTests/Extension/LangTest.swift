@@ -31,6 +31,7 @@ final class LangTest: XCTestCase {
     }
     
     func testIntLPad() throws {
+        XCTAssertEqual((-1).lpad(2), "-01")
         XCTAssertEqual(0.lpad(2), "00")
         XCTAssertEqual(2.lpad(2), "02")
         XCTAssertEqual(3.lpad(2), "03")
