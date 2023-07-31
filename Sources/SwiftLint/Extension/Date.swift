@@ -17,7 +17,7 @@ public extension Date {
         self = Date(timeIntervalSince1970: TimeInterval(from))
     }
     
-    static func from (_ from: String, format: String? = nil, zone: Locale? = nil) -> Date? {
+    static func from (_ from: String, format: String? = nil, zone: TimeZone? = nil, locale: Locale? = nil) -> Date? {
         let src = from.replace(search: "\\.[0-9]{3,}.*$", with: "").replace(search: "[a-zA-Z]", with: " ")
         var fmt: String? = format
         if fmt == nil {
@@ -32,12 +32,13 @@ public extension Date {
         
         if let f = fmt {
             let formatter = DateFormatter()
-            if let z = zone {
-                formatter.locale = z
+            if let locale = locale {
+                formatter.locale = locale
             }else{
                 formatter.locale = .init(identifier: "en_US_POSIX")
             }
             formatter.dateFormat = f
+            formatter.timeZone = zone
             let date = formatter.date(from: src)
             return date
         }else{
@@ -63,6 +64,23 @@ public extension Date {
     var monthInt: Int { Int(self.string(format: "MM"))! }
     
     var yearInt: Int { Int(self.string(format: "YYYY"))! }
+    
+    /**
+     * Sunday is zero
+     */
+    var weekInt: Int {
+        switch self.string(format: "EEE") {
+        case "Sun": return 0
+        case "Mon": return 1
+        case "Tue": return 2
+        case "Wed": return 3
+        case "Thu": return 4
+        case "Fri": return 5
+        case "Sat": return 6
+        default:
+            return Int(self.string(format: "e")) ?? 0
+        }
+    }
     
     var dayInt: Int { Int(self.string(format: "dd"))! }
     
@@ -101,18 +119,19 @@ public extension Date {
  */
 public extension Date {
     
-    func string(format: String = "YYYY-MM-dd HH:mm:ss", zone: Locale? = nil) -> String {
+    func string(format: String = "YYYY-MM-dd HH:mm:ss", zone: TimeZone? = nil, locale: Locale? = nil) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = DateFormatter.Style.medium
         formatter.timeStyle = DateFormatter.Style.short
         // formatter.
         formatter.dateFormat = format
         // formatter.locale = Loca
-        if let z = zone {
-            formatter.locale = z
+        if let locale = locale {
+            formatter.locale = locale
         }else{
             formatter.locale = .init(identifier: "en_US_POSIX")
         }
+        formatter.timeZone = zone
         return formatter.string(from: self)
     }
     
