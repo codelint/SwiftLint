@@ -41,6 +41,7 @@ class StringTests: XCTestCase {
         XCTAssertTrue("1986-09-08 00:00:00".match(regex: "[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}"))
         XCTAssertFalse("1986-9-08 00:00:00".match(regex: "[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}"))
         XCTAssertTrue("186-09-08 00:00:00".match(regex: "[0-9]{1,4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}"))
+        XCTAssertTrue("13.1237".match(regex: "[0-9]{1,3}\\.[0-9]{4,}"))
     }
     
     func testReplace() {

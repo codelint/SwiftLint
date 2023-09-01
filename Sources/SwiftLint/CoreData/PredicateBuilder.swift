@@ -121,12 +121,20 @@ public class PredicateBuilder {
         case LT = "<="
         case GT = ">"
         case GE = ">="
+        case SUB = "SUB"
     }
 
+    var connector: String
     var wheres: [(String, Operation, Value)]
     
     public init(){
         self.wheres = []
+        self.connector = "&&"
+    }
+    
+    public func union() -> Self {
+        self.connector = "||"
+        return self
     }
     
     public func add(is field: String) -> Self {
@@ -216,28 +224,34 @@ public class PredicateBuilder {
         return self.add(field, operation: .NOTBETWEEN, value: .init(vars: [.init(number: a), .init(number: b)]))
     }
     
-    public func predicate() -> NSPredicate?
-    {
+    public func whereSub(_ build: (PredicateBuilder) -> PredicateBuilder) -> Self{
+        return self.add("", operation: .SUB, value: build(PredicateBuilder()).expression())
+    }
+    
+    public func expression() -> String {
         let predicate_str = self.wheres.map { (kov: (field: String, op: Operation, value: Value)) -> String in
             switch kov.op {
             case .EQ, .LE, .GE, .GT, .LT, .NEQ:
                 return "\(kov.field) \(kov.op.rawValue) \(kov.value.description)"
-            case .IN:
-                return "\(kov.field) IN {\(kov.value.vars.map({$0.description}).joined(separator: ","))}"
             case .NULL:
                 return "\(kov.field)\(kov.value.bool ?? true ? " == " : " != ")nil"
+            case .IN:
+                return "\(kov.field) IN {\(kov.value.vars.map({$0.description}).joined(separator: ","))}"
             case .NOTIN:
-                return "\(kov.field) NOT IN \(kov.value.numbers[0]),\(kov.value.numbers[1])"
+                return "\(kov.field) NOT IN {\(kov.value.vars.map({$0.description}).joined(separator: ","))}"
             case .NOTBETWEEN:
                 return "(\(kov.field) < \(kov.value.numbers[0]) || \(kov.field) > \(kov.value.numbers[1]))"
             case .BETWEEN:
                 return "\(kov.field) BETWEEN {\(kov.value.numbers[0]),\(kov.value.numbers[1])}"
+            case .SUB:
+                return "( \(kov.value.description) )"
             }
         }.filter({ str in
             return str.count > 0
-        }).joined(separator: " && ")
+        }).joined(separator: " \(connector) ")
         
-        // print(predicate_str)
-        return NSPredicate(format: predicate_str)
+        return predicate_str
     }
+    
+    public func predicate() -> NSPredicate? { NSPredicate(format: expression()) }
 }
