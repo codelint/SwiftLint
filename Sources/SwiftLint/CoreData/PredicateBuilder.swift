@@ -244,7 +244,8 @@ public class PredicateBuilder {
             case .BETWEEN:
                 return "\(kov.field) BETWEEN {\(kov.value.numbers[0]),\(kov.value.numbers[1])}"
             case .SUB:
-                return "( \(kov.value.description) )"
+                
+                return kov.value.str == nil ? "" : "( \(kov.value.str!) )"
             }
         }.filter({ str in
             return str.count > 0
