@@ -216,12 +216,12 @@ public class PredicateBuilder {
     
     public func whereBetween<Number: Numeric>(_ field: String, a: Number, b: Number) -> Self
     {
-        return self.add(field, operation: .BETWEEN, value: .init(vars: [.init(number: a), .init(number: b)]))
+        return self.add(field, operation: .BETWEEN, value: .init([.init(number: a), .init(number: b)]))
     }
     
     public func whereNotBetween<Number: Numeric>(_ field: String, a: Number, b: Number) -> Self
     {
-        return self.add(field, operation: .NOTBETWEEN, value: .init(vars: [.init(number: a), .init(number: b)]))
+        return self.add(field, operation: .NOTBETWEEN, value: .init([.init(number: a), .init(number: b)]))
     }
     
     public func whereSub(_ build: (PredicateBuilder) -> PredicateBuilder) -> Self{
