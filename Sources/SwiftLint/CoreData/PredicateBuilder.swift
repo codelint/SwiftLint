@@ -115,6 +115,7 @@ public class PredicateBuilder {
         case IN, NULL, BETWEEN
         case NOTIN = "NOT IN"
         case NOTBETWEEN = "NOT BETWEEN"
+        case CONTAIN = "CONTAINS"
         case NEQ = "!="
         case EQ = "=="
         case LE = "<"
@@ -194,6 +195,10 @@ public class PredicateBuilder {
         return self
     }
     
+    public func whereContain(_ field: String, _ text: String) -> Self {
+        return self.add(field, operation: .CONTAIN, value: .init(text))
+    }
+    
     public func whereNull(_ field: String) -> Self
     {
         return self.add(field, operation: .NULL, value: .init(true))
@@ -244,8 +249,9 @@ public class PredicateBuilder {
             case .BETWEEN:
                 return "\(kov.field) BETWEEN {\(kov.value.numbers[0]),\(kov.value.numbers[1])}"
             case .SUB:
-                
                 return kov.value.str == nil ? "" : "( \(kov.value.str!) )"
+            case .CONTAIN:
+                return "\(kov.field) CONTAINS \(kov.value.description)"
             }
         }.filter({ str in
             return str.count > 0
