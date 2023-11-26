@@ -45,7 +45,7 @@ public extension String {
             options: []
         ) {
             
-            return regex.stringByReplacingMatches(in: self, range: NSRange(0..<self.utf8.count), withTemplate: newOne)
+            return regex.stringByReplacingMatches(in: self, range: NSRange(0..<self.count), withTemplate: newOne)
         }
         return self
     }
