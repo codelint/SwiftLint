@@ -119,7 +119,7 @@ public extension Date {
  */
 public extension Date {
     
-    func string(format: String = "YYYY-MM-dd HH:mm:ss", zone: TimeZone? = nil, locale: Locale? = nil) -> String {
+    func string(format: String = "yyyy-MM-dd HH:mm:ss", zone: TimeZone? = nil, locale: Locale? = nil) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = DateFormatter.Style.medium
         formatter.timeStyle = DateFormatter.Style.short
@@ -136,19 +136,19 @@ public extension Date {
     }
     
     var datetimeString: String {
-        return self.string(format: "YYYY-MM-dd HH:mm:ss")
+        return self.string(format: "yyyy-MM-dd HH:mm:ss")
     }
     
     var dateString: String {
-        return self.string(format: "YYYY-MM-dd")
+        return self.string(format: "yyyy-MM-dd")
     }
     
     var iso8601: String {
-        return self.string(format: "YYYY-MM-dd HH:mm:ss")
+        return self.string(format: "yyyy-MM-dd HH:mm:ss")
     }
     
     var isoDate: String {
-        return self.string(format: "YYYY-MM-dd")
+        return self.string(format: "yyyy-MM-dd")
     }
     
 }
@@ -157,9 +157,9 @@ public extension Date {
     
     var YMd: Date { today() ?? self }
     
-    func today(time: String = "00:00:00") -> Date? { Date.from(self.string(format: "YYYY-MM-dd \(time)")) }
+    func today(time: String = "00:00:00") -> Date? { Date.from(self.string(format: "yyyy-MM-dd \(time)")) }
     
-    func todayAt(_ seconds: Int = 0 ) -> Date { Date(int: Date.from(self.string(format: "YYYY-MM-dd 00:00:00"))!.int + seconds) }
+    func todayAt(_ seconds: Int = 0 ) -> Date { Date(int: Date.from(self.string(format: "yyyy-MM-dd 00:00:00"))!.int + seconds) }
 }
 
 /**
