@@ -9,8 +9,8 @@ import Foundation
 
 public extension Date {
     
-//    static let FMT_ISO = "YYYY-MM-dd HH:mm:ss"
-//    static let FMT_ISO_DATE = "YYYY-MM-dd"
+//    static let FMT_ISO = "yyyy-MM-dd HH:mm:ss"
+//    static let FMT_ISO_DATE = "yyyy-MM-dd"
     
     init(int from: any BinaryInteger)
     {
@@ -22,11 +22,11 @@ public extension Date {
         var fmt: String? = format
         if fmt == nil {
             if src.match(regex: "[0-9]{1,4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}") {
-                fmt = "YYYY-MM-dd HH:mm:ss"
+                fmt = "yyyy-MM-dd HH:mm:ss"
             }
             
             if src.match(regex: "[0-9]{1,4}-[0-9]{2}-[0-9]{2}") {
-                fmt = "YYYY-MM-dd"
+                fmt = "yyyy-MM-dd"
             }
         }
         
@@ -58,12 +58,12 @@ public extension Date {
     }
     
     var year: Int {
-        return Int(self.string(format: "YYYY"))!
+        return Int(self.string(format: "yyyy"))!
     }
     
     var monthInt: Int { Int(self.string(format: "MM"))! }
     
-    var yearInt: Int { Int(self.string(format: "YYYY"))! }
+    var yearInt: Int { Int(self.string(format: "yyyy"))! }
     
     /**
      * Sunday is zero
@@ -104,7 +104,7 @@ public extension Date {
     
     func days(to: Date) -> Int {
     
-        if let end = Date.from(to.string(format: "YYYY-MM-dd 00:00:00")), let start = Date.from(self.string(format: "YYYY-MM-dd 00:00:00")) {
+        if let end = Date.from(to.string(format: "yyyy-MM-dd 00:00:00")), let start = Date.from(self.string(format: "yyyy-MM-dd 00:00:00")) {
             return (abs(end.int - start.int))/86400
         }else{
             return 0
@@ -123,9 +123,8 @@ public extension Date {
         let formatter = DateFormatter()
         formatter.dateStyle = DateFormatter.Style.medium
         formatter.timeStyle = DateFormatter.Style.short
-        // formatter.
         formatter.dateFormat = format
-        // formatter.locale = Loca
+        
         if let locale = locale {
             formatter.locale = locale
         }else{
