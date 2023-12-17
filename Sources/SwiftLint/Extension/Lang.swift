@@ -73,7 +73,7 @@ public extension Double {
     }
     
     func toFixed(_ p: Int) -> String {
-        return String(format: "%.\(p)f", self)
+        return String(format: "%.\(p)f", self.roundTo(places: p + 1))
     }
 
 }
