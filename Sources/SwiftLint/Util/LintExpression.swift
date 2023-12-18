@@ -7,12 +7,12 @@
 
 import Foundation
 
-class LintExpression {
+open class LintExpression {
     
     let text: String
     var context: [String: Double] = [:]
     
-    init(_ text: String, context: [String: Double] = [:]) {
+    public init(_ text: String, context: [String: Double] = [:]) {
         // self.text = text
         var text = text
             .replace(search: "（", with: "(")
@@ -53,12 +53,12 @@ class LintExpression {
         }
     }
     
-    func evaluate(_ defaults: Double) -> Double { evaluate() ?? defaults }
+    public func evaluate(_ defaults: Double) -> Double { evaluate() ?? defaults }
     
-    var int: Int? { evaluate()?.int }
-    var double: Double? { evaluate() }
+    public var int: Int? { evaluate()?.int }
+    public var double: Double? { evaluate() }
 
-    func evaluate() -> Double? {
+    public func evaluate() -> Double? {
         var operandStack: [Double] = []
         var operatorStack: [Operator] = []
         
