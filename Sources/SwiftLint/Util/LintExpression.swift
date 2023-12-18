@@ -28,7 +28,7 @@ open class LintExpression {
         self.context = context.reduce([:], { $0.add(key: $1.key.lowercased(), value: $1.value) })
     }
     
-    func split2tokens() -> [String] {
+    public func split2tokens() -> [String] {
         let patterns = [
             "(#[a-zA-Z0-9]{1,}#)",
             "([\\(\\)\\+\\-\\*\\/\\%])",
