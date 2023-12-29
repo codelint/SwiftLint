@@ -230,7 +230,7 @@ public class PredicateBuilder {
     }
     
     public func whereSub(_ build: (PredicateBuilder) -> PredicateBuilder) -> Self{
-        return self.add("", operation: .SUB, value: build(PredicateBuilder()).expression())
+        return self.add("##\(wheres.count)##", operation: .SUB, value: build(PredicateBuilder()).expression())
     }
     
     public func expression() -> String {
@@ -249,6 +249,7 @@ public class PredicateBuilder {
             case .BETWEEN:
                 return "\(kov.field) BETWEEN {\(kov.value.numbers[0]),\(kov.value.numbers[1])}"
             case .SUB:
+                // field is unused here...
                 return kov.value.str == nil ? "" : "( \(kov.value.str!) )"
             case .CONTAIN:
                 return "\(kov.field) CONTAINS \(kov.value.description)"
