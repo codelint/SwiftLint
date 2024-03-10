@@ -112,7 +112,7 @@ public class PredicateBuilder {
     }
     
     public enum Operation: String {
-        case IN, NULL, BETWEEN
+        case IN, NULL, BETWEEN, HAS, ANY, ANYIN
         case NOTIN = "NOT IN"
         case NOTBETWEEN = "NOT BETWEEN"
         case CONTAIN = "CONTAINS"
@@ -234,7 +234,7 @@ public class PredicateBuilder {
     }
     
     public func expression() -> String {
-        let predicate_str = self.wheres.map { (kov: (field: String, op: Operation, value: Value)) -> String in
+        let predicate_str = self.wheres.map({ (kov: (field: String, op: Operation, value: Value)) -> String in
             switch kov.op {
             case .EQ, .LE, .GE, .GT, .LT, .NEQ:
                 return "\(kov.field) \(kov.op.rawValue) \(kov.value.description)"
@@ -253,13 +253,20 @@ public class PredicateBuilder {
                 return kov.value.str == nil ? "" : "( \(kov.value.str!) )"
             case .CONTAIN:
                 return "\(kov.field) CONTAINS \(kov.value.description)"
+            case .ANY, .HAS:
+                return "ANY \(kov.field) = \(kov.value.description)"
+            case .ANYIN:
+                return "ANY \(kov.field) IN {\(kov.value.vars.map({$0.description}).joined(separator: ","))}"
             }
-        }.filter({ str in
+        }).filter({ str in
             return str.count > 0
         }).joined(separator: " \(connector) ")
         
         return predicate_str
     }
     
-    public func predicate() -> NSPredicate? { NSPredicate(format: expression()) }
+    public func predicate() -> NSPredicate? {
+        let exp = expression()
+        return exp.count > 0 ? NSPredicate(format: expression()) : nil
+    }
 }
