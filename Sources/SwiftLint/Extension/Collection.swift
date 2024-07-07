@@ -73,24 +73,6 @@ public extension Dictionary where Key:Comparable{
     }
 }
 
-//public extension Dictionary where Key: StringProtocol {
-//    func keyStringify() -> [String: Value] {
-//        var dict: [String: Value] = [:]
-//
-//        self.forEach { (key, value) in
-//            dict[key.description] = value
-//        }
-//
-//        return dict
-//    }
-//}
-
-//public extension Optional {
-//    func let(){
-//        
-//    }
-//}
-
 public extension Set {
     var array: [Element] {
         var elements: [Element] = []
