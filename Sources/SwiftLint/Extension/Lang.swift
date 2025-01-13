@@ -75,5 +75,14 @@ public extension Double {
     func toFixed(_ p: Int) -> String {
         return String(format: "%.\(p)f", self.roundTo(places: p + 1))
     }
+    
+    func toString(precision p: Int) -> String {
+        var result = String(format: "%.\(p)f", self.roundTo(places: p + 1))
+        result = result.replacingOccurrences(of: "0+$", with: "", options: .regularExpression)
+        if result.last == "." {
+            result.removeLast()
+        }
+        return result
+    }
 
 }

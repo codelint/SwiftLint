@@ -40,6 +40,13 @@ final class LangTest: XCTestCase {
     }
     
     
+    func testDoubleToString() throws {
+        XCTAssertEqual("1", 1.000.toString(precision: 4))
+        XCTAssertNotEqual("1.000", 1.000.toString(precision: 4))
+        XCTAssertEqual("1.2", (1.1999999).toString(precision: 2))
+        XCTAssertEqual("1.12", (1.1199999).toString(precision: 2))
+    }
+    
 
 //    func testPerformanceExample() throws {
 //
