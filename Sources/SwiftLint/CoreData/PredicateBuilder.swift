@@ -270,3 +270,56 @@ public class PredicateBuilder {
         return exp.count > 0 ? NSPredicate(format: expression()) : nil
     }
 }
+
+
+public extension NSPredicate {
+    
+    static func build(transform: (PredicateBuilder) -> PredicateBuilder) -> NSPredicate? {
+        transform(PredicateBuilder()).predicate()
+    }
+    
+}
+
+public extension PredicateBuilder {
+    
+    func pipe<Value>(through: @escaping (PredicateBuilder) -> Value) -> Value {
+        through(self)
+    }
+    
+    func with<T>(_ one: T?, transform: @escaping (T, Self) -> Void) -> Self {
+        if let t = one {
+            transform(t, self)
+        }
+        return self
+    }
+    
+    func whether(_ bool: Bool, transform: @escaping (Self) -> Void) -> Self {
+        if bool {
+            transform(self)
+        }
+        return self
+    }
+    
+    func whether(_ bool: Bool, yes: @escaping (Self) -> Self, not: @escaping (Self) -> Self) -> Self {
+        if bool {
+            return yes(self)
+        }else{
+            return not(self)
+        }
+    }
+    
+    func map(is bool: Bool, to transform: @escaping (PredicateBuilder) -> PredicateBuilder) -> PredicateBuilder {
+        if bool {
+            return transform(self)
+        }
+        return self
+    }
+    
+    func map<T>(with one: T?, to transform: @escaping (T, PredicateBuilder) -> PredicateBuilder) -> PredicateBuilder {
+        if let t = one {
+            return transform(t, self)
+        }
+        return self
+    }
+    
+}
